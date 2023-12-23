@@ -102,7 +102,7 @@ class CoffeeShop:
                                 name_exists = False
                                 while name_exists is False:
                                     name = input("Please enter barista name: ")
-                                    if name.strip()!=""
+                                    if name.strip()!="":
                                         if name in CoffeeShop.chosen_baristas:
                                             print(f"Removed {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                             del CoffeeShop.chosen_baristas[name]
@@ -123,9 +123,33 @@ class CoffeeShop:
             while valid_response is False and sufficient_supply is False:
                 try:
                     demand = int(input(f"Coffee {coffee.get_name()}, demand {coffee.get_mon_dem()}, how much to sell: "))
-                    if demand >= 0:
-                        coffee.check_supply(demand, CoffeeShop.chosen_baristas, self.ingredients)
+                    if demand > coffee.get_mon_dem():
+                        print(f"Please enter a value less than or equal to {coffee.get_mon_dem()}")
+                    elif demand >=0:
+                        sufficient_supply = coffee.check_supply(demand, CoffeeShop.chosen_baristas, self.ingredients)
                         valid_response = True
+                        if sufficient_supply is True:
+
+                            list_of_baristas = list(CoffeeShop.chosen_baristas.values())
+                            for i, barista in enumerate(list_of_baristas):
+                                if barista.hrs_worked!=80:
+                                    avl = 80 - barista.hrs_worked
+                                    if avl >= ((demand*coffee.get_prep_time())/60):
+                                        barista.hrs_worked += ((demand*coffee.get_prep_time())/60)
+                                        break
+                                    else:
+                                        rem = demand - avl
+                                        barista.hrs_worked += avl
+                                        list_of_baristas[i+1].hrs += rem
+                                        break
+
+                            for ingredient in list(self.ingredients.values()):
+                                if ingredient.get_name() == "Milk":
+                                    ingredient.quantity_used = demand*coffee.get_milk_reqd()
+                                elif ingredient.get_name() == "Beans":
+                                    ingredient.quantity_used = demand*coffee.get_beans_reqd()
+                                else:
+                                    ingredient.quantity_used = demand*coffee.get_spices_reqd()
                     else:
                         print("Please enter an integer greater than or equal to 0!")
                 except:

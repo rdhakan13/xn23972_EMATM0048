@@ -55,8 +55,10 @@ class CoffeeType:
         messages = []
         ingredient_capacity = []
         total_time_available = 0
+        t = []
         for barista in list(baristas_dict.values()):
             total_time_available += (80 - barista.hrs_worked)
+            t.append(barista.hrs_worked)
         for ingredient in list(ingredients.values()):
             if ingredient.get_name() == "Milk":
                 req = demand*self.milk_reqd
@@ -71,23 +73,24 @@ class CoffeeType:
                 req = demand*self.beans_reqd
                 if req!=0:
                     avl = ingredient.get_capacity() - ingredient.quantity_used
-                    ingredient_capacity.append(math.floor(avl/self.milk_reqd))
+                    ingredient_capacity.append(math.floor(avl/self.beans_reqd))
                     if avl < req:
                         messages.append("Beans need {req:.1f}g, pantry contains only {avl:.1f}g".format(req=req, avl = avl))
                 else:
                     pass
             else:
-                req = demand*self.spices_reqd_reqd
+                req = demand*self.spices_reqd
                 if req!=0:
                     avl = ingredient.get_capacity() - ingredient.quantity_used
-                    ingredient_capacity.append(math.floor(avl/self.milk_reqd))
+                    ingredient_capacity.append(math.floor(avl/self.spices_reqd))
                     if avl < req:
                         messages.append("Spices need {req:.1f}g, pantry contains only {avl:.1f}g".format(req=req, avl = avl))
                 else:
                     pass
         if (total_time_available < ((demand*self.prep_time)/60)) and not messages:
             sufficient_supply = False
-            capacity = math.floor((total_time_available*60)/self.prep_time)
+            capacity = (total_time_available*60)/self.prep_time
+            capacity = math.floor(capacity)
             print(f"Insufficient labour: quantity requested {demand}, capacity {capacity}")
             return sufficient_supply
         elif len(messages)>0 and (total_time_available > ((demand*self.prep_time)/60)):
