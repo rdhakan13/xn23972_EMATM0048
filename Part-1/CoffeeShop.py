@@ -29,7 +29,6 @@ class CoffeeShop:
     def __init__(self, name:str, simulation_months:int):
         self.name = name
         self.simulation_months = simulation_months
-        self.start_cash_balance = 10000
         self.fixed_monthly_rent = 1500
         self.coffeetypes = {
             "Expresso": CoffeeType("Expresso", 0, 8, 0, 3, 500, 1.5),
@@ -52,7 +51,7 @@ class CoffeeShop:
 
     def bartista_selection(self):
         valid_response = False
-        if not self.chosen_baristas:
+        if not CoffeeShop.chosen_baristas:
             while valid_response is False:
                 try:
                     no_of_baristas = int(input("Please enter the number of baristas to add: "))
@@ -69,7 +68,7 @@ class CoffeeShop:
                                     if name in CoffeeShop.chosen_baristas:
                                         print("Barista name already exists, please enter a unique name")
                                     else:
-                                        self.chosen_baristas.update({name:Barista(name)})
+                                        CoffeeShop.chosen_baristas.update({name:Barista(name)})
                                         print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                         name_exists = False
                         valid_response = True
@@ -155,3 +154,21 @@ class CoffeeShop:
                         print("Please enter an integer greater than or equal to 0!")
                 except:
                     print("Please enter an integer greater than or equal to 0!")
+    
+    def make_payments(self):
+        coffee_income = []
+        for coffee in list(self.coffeetypes.values()):
+            coffee_income.append(coffee.get_quantity_sold()*coffee.get_sell_price())
+            coffee.reset_sold_quantity()
+        total_coffee_income = sum(coffee_income)
+        CoffeeShop.current_cash = CoffeeShop.current_cash + total_coffee_income - self.fixed_monthly_rent
+        if CoffeeShop.current_cash < 0:
+            print("Insufficient cash to make utilities payment!")
+        else:
+            print(f"Paid rent/utilities £{self.fixed_monthly_rent:.2f}")
+            for barista in list(CoffeeShop.chosen_baristas.values()):
+                CoffeeShop.current_cash -= barista.get_paid(CoffeeShop.current_cash)
+                if CoffeeShop.current_cash < 0:
+                    print("Insufficient cash to pay baristas!")
+                    break
+            for ingredient in list(self.ingredients.values()):
