@@ -31,6 +31,7 @@ while run_simulation is True:
         Coffeeshop = CoffeeShop(shop_name, month)
         Coffeeshop.print_header()
         Coffeeshop.bartista_selection()
+        Coffeeshop.request_coffee_demand()
                 
     run_simulation_response = False
     positive_response = ["y","yes"]

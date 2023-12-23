@@ -1,3 +1,4 @@
+import math
 from Ingredient import Ingredient
 
 class CoffeeType:
@@ -49,20 +50,71 @@ class CoffeeType:
     def get_sell_price(self):
         return self.sell_price
     
-    def check(self, baristas_dict:dict, ingredients:dict):
-        valid_response = False
-        while valid_response is False:
-            try:
-                demand = int(input(f"Coffee {self.name()}, demand {self.mon_dem()}, how much to sell: "))
-                if demand >= 0:
-                    calculate
-                    valid_response = True
+    def check_supply(self, demand:int, baristas_dict:dict, ingredients:dict):
+        sufficient_supply = True
+        messages = []
+        ingredient_capacity = []
+        total_time_available = 0
+        for barista in list(baristas_dict.values()):
+            total_time_available += (80 - barista.hrs_worked)
+        for ingredient in list(ingredients.values()):
+            if ingredient.get_name() == "Milk":
+                req = demand*self.milk_reqd
+                if req!=0:
+                    avl = ingredient.get_capacity() - ingredient.quantity_used
+                    ingredient_capacity.append(math.floor(avl/self.milk_reqd))
+                    if avl < req:
+                        messages.append("Milk need {req:.1f}L, pantry contains only {avl:.1f}L".format(req=req, avl = avl))
                 else:
-                    print("Please enter a value greater than or equal to 0!")
-            except:
-                print("Please enter a value greater than or equal to 0!")
-        match self.name:
-            case ""
+                    pass
+            elif ingredient.get_name() == "Beans":
+                req = demand*self.beans_reqd
+                if req!=0:
+                    avl = ingredient.get_capacity() - ingredient.quantity_used
+                    ingredient_capacity.append(math.floor(avl/self.milk_reqd))
+                    if avl < req:
+                        messages.append("Beans need {req:.1f}g, pantry contains only {avl:.1f}g".format(req=req, avl = avl))
+                else:
+                    pass
+            else:
+                req = demand*self.spices_reqd_reqd
+                if req!=0:
+                    avl = ingredient.get_capacity() - ingredient.quantity_used
+                    ingredient_capacity.append(math.floor(avl/self.milk_reqd))
+                    if avl < req:
+                        messages.append("Spices need {req:.1f}g, pantry contains only {avl:.1f}g".format(req=req, avl = avl))
+                else:
+                    pass
+        if (total_time_available < ((demand*self.prep_time)/60)) and not messages:
+            sufficient_supply = False
+            capacity = math.floor((total_time_available*60)/self.prep_time)
+            print(f"Insufficient labour: quantity requested {demand}, capacity {capacity}")
+            return sufficient_supply
+        elif len(messages)>0 and (total_time_available > ((demand*self.prep_time)/60)):
+            sufficient_supply = False
+            print("Insufficient ingredients: ")
+            for message in messages:
+                print(message)
+            capacity = min(ingredient_capacity)
+            print(f"Capacity is {capacity:.1f}")
+            return sufficient_supply
+        elif (total_time_available < ((demand*self.prep_time)/60)) and len(messages)>0:
+            sufficient_supply = False
+            barista_capacity = math.floor((total_time_available*60)/self.prep_time)
+            if barista_capacity <= min(ingredient_capacity):
+                print(f"Insufficient labour: quantity requested {demand}, capacity {barista_capacity}")
+            else:
+                print("Insufficient ingredients: ")
+                for message in messages:
+                    print(message)
+                    capacity = min(ingredient_capacity)
+                print(f"Capacity is {capacity:.1f}")
+            return sufficient_supply
+        else:
+            return sufficient_supply
+
+            
+
         
 
     

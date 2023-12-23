@@ -19,16 +19,13 @@ class Barista:
     """
     hrs_worked = 0
 
-    def __init__(self, name):
+    def __init__(self, name:str):
         self.name = name
         self.hrs_payed = 120
         self.rate_per_hour = 15
 
     def get_name(self):
         return self.name
-    
-    def get_hrs_worked():
-        return Barista.hrs_worked
     
     def get_hrs_payed(self):
         return self.hrs_payed

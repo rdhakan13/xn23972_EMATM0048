@@ -25,7 +25,7 @@ class CoffeeShop:
     chosen_baristas = {}
     current_cash = 10000
 
-    def __init__(self, name, simulation_months):
+    def __init__(self, name:str, simulation_months:int):
         self.name = name
         self.simulation_months = simulation_months
         self.start_cash_balance = 10000
@@ -39,9 +39,9 @@ class CoffeeShop:
             "Latte": CoffeeType("Latte", 0.3, 8, 3, 6, 1000, 4.0)
         }
         self.ingredients = {
-            "Milk": Ingredient(),
-            "Beans": Ingredient(),
-            "Spices": Ingredient()
+            "Milk": Ingredient("Milk", 300, 0.4, 0.1),
+            "Beans": Ingredient("Beans", 20000, 0.1, 0.001),
+            "Spices": Ingredient("Spices", 4000, 0.1, 0.001)
         }
 
     def print_header(self):
@@ -64,12 +64,13 @@ class CoffeeShop:
                             name_exists = True
                             while name_exists is True:
                                 name = input("Please enter barista name: ")
-                                if name in CoffeeShop.chosen_baristas:
-                                    print("Barista name already exists, please enter a unique name")
-                                else:
-                                    self.chosen_baristas.update({name:Barista(name)})
-                                    print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
-                                    name_exists = False
+                                if name.strip()!="":
+                                    if name in CoffeeShop.chosen_baristas:
+                                        print("Barista name already exists, please enter a unique name")
+                                    else:
+                                        self.chosen_baristas.update({name:Barista(name)})
+                                        print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
+                                        name_exists = False
                         valid_response = True
                 except:
                     print("Please enter a positive integer")
@@ -85,12 +86,13 @@ class CoffeeShop:
                                 name_exists = True
                                 while name_exists is True:
                                     name = input("Please enter barista name: ")
-                                    if name in CoffeeShop.chosen_baristas:
-                                        print("Barista name already exists, please enter a unique name")
-                                    else:
-                                        CoffeeShop.chosen_baristas.update({name:Barista(name)})
-                                        print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
-                                        name_exists = False
+                                    if name.strip()!="":
+                                        if name in CoffeeShop.chosen_baristas:
+                                            print("Barista name already exists, please enter a unique name")
+                                        else:
+                                            CoffeeShop.chosen_baristas.update({name:Barista(name)})
+                                            print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
+                                            name_exists = False
                             valid_response = True
                     elif add_or_remove < 0:
                         if (add_or_remove + len(CoffeeShop.chosen_baristas)) <= 0:
@@ -100,21 +102,31 @@ class CoffeeShop:
                                 name_exists = False
                                 while name_exists is False:
                                     name = input("Please enter barista name: ")
-                                    if name in CoffeeShop.chosen_baristas:
-                                        print(f"Removed {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
-                                        del CoffeeShop.chosen_baristas[name]
-                                        name_exists = True
-                                    else:
-                                        print("Please enter a valid barista name. Here are the current baristas: ")
-                                        print(*(list(CoffeeShop.chosen_baristas.keys())), sep = ", ") 
+                                    if name.strip()!=""
+                                        if name in CoffeeShop.chosen_baristas:
+                                            print(f"Removed {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
+                                            del CoffeeShop.chosen_baristas[name]
+                                            name_exists = True
+                                        else:
+                                            print("Please enter a valid barista name. Here are the current baristas: ")
+                                            print(*(list(CoffeeShop.chosen_baristas.keys())), sep = ", ") 
                             valid_response = True
                     else:
                         valid_response = True
                 except:
                     print("Please enter an integer")
     
-    # def request_coffee_demand(self):
-    #     valid_response = False
-    #     while valid_response is False:
-    #         try:
-    #             request_demand = 
+    def request_coffee_demand(self):
+        for coffee in list(self.coffeetypes.values()):
+            valid_response = False
+            sufficient_supply = False
+            while valid_response is False and sufficient_supply is False:
+                try:
+                    demand = int(input(f"Coffee {coffee.get_name()}, demand {coffee.get_mon_dem()}, how much to sell: "))
+                    if demand >= 0:
+                        coffee.check_supply(demand, CoffeeShop.chosen_baristas, self.ingredients)
+                        valid_response = True
+                    else:
+                        print("Please enter an integer greater than or equal to 0!")
+                except:
+                    print("Please enter an integer greater than or equal to 0!")

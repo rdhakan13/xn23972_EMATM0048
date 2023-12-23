@@ -17,7 +17,7 @@ class Supplier:
     info(additional=""):
         Prints the person's name and age.
     """
-    def __init__(self, name):
+    def __init__(self, name:str):
         self.name = name
         self.milk_rate = 0.3
         self.beans_rate = 0.1

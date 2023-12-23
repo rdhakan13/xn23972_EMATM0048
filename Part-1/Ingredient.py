@@ -21,7 +21,7 @@ class Ingredient:
     """
     quantity_used = 0
 
-    def __init__(self, name, capacity, deprec, pantry_cost_rate):
+    def __init__(self, name:str, capacity:int, deprec:float, pantry_cost_rate:float):
         self.name = name
         self.capacity = capacity
         self.deprec = deprec
