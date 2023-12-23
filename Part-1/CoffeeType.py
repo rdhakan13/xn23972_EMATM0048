@@ -49,20 +49,20 @@ class CoffeeType:
     def get_sell_price(self):
         return self.sell_price
     
-    # def check(self, baristas_dict:dict, ingredients:dict):
-    #     valid_response = False
-    #     while valid_response is False:
-    #         try:
-    #             demand = int(input(f"Coffee {CoffeeType.get_name()}, demand {CoffeeType.get_mon_dem()}, how much to sell: "))
-    #             if demand >= 0:
-    #                 calculate
-    #                 valid_response = True
-    #             else:
-    #                 print("Please enter a value greater than or equal to 0!")
-    #         except:
-    #             print("Please enter a value greater than or equal to 0!")
-    #     match self.name:
-    #         case ""
+    def check(self, baristas_dict:dict, ingredients:dict):
+        valid_response = False
+        while valid_response is False:
+            try:
+                demand = int(input(f"Coffee {self.name()}, demand {self.mon_dem()}, how much to sell: "))
+                if demand >= 0:
+                    calculate
+                    valid_response = True
+                else:
+                    print("Please enter a value greater than or equal to 0!")
+            except:
+                print("Please enter a value greater than or equal to 0!")
+        match self.name:
+            case ""
         
 
     
