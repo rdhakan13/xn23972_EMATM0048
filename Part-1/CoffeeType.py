@@ -1,6 +1,5 @@
 import math
 from fractions import Fraction
-from Ingredient import Ingredient
 
 class CoffeeType:
     """
@@ -21,6 +20,9 @@ class CoffeeType:
     info(additional=""):
         Prints the person's name and age.
     """
+
+    sold = 0
+    
     def __init__(self, name:str, milk_reqd:float, beans_reqd:int, spices_reqd:int, prep_time:int, mon_dem:int, sell_price:float):
         self.name = name
         self.milk_reqd = milk_reqd
@@ -51,6 +53,12 @@ class CoffeeType:
     def get_sell_price(self):
         return self.sell_price
     
+    def increase_sold_quantity(self, demand:int):
+        CoffeeType.sold = demand
+    
+    def reset_sold_quantity(self):
+        CoffeeType.sold = 0
+    
     def check_supply(self, demand:int, baristas_dict:dict, ingredients:dict):
         sufficient_supply = True
         messages = []
@@ -58,13 +66,13 @@ class CoffeeType:
         total_time_available = 0
         t = []
         for barista in list(baristas_dict.values()):
-            total_time_available += Fraction(80) - barista.hrs_worked
-            t.append(barista.hrs_worked)
+            total_time_available += Fraction(80) - Fraction(barista.get_hrs_worked())
+            t.append(barista.get_hrs_worked())
         for ingredient in list(ingredients.values()):
             if ingredient.get_name() == "Milk":
                 req = demand*self.milk_reqd
                 if req!=0:
-                    avl = ingredient.get_capacity() - ingredient.quantity_used
+                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
                     ingredient_capacity.append(math.floor(avl/self.milk_reqd))
                     if avl < req:
                         messages.append("Milk need {req:.1f}L, pantry contains only {avl:.1f}L".format(req=req, avl = avl))
@@ -73,7 +81,7 @@ class CoffeeType:
             elif ingredient.get_name() == "Beans":
                 req = demand*self.beans_reqd
                 if req!=0:
-                    avl = ingredient.get_capacity() - ingredient.quantity_used
+                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
                     ingredient_capacity.append(math.floor(avl/self.beans_reqd))
                     if avl < req:
                         messages.append("Beans need {req:.1f}g, pantry contains only {avl:.1f}g".format(req=req, avl = avl))
@@ -82,7 +90,7 @@ class CoffeeType:
             else:
                 req = demand*self.spices_reqd
                 if req!=0:
-                    avl = ingredient.get_capacity() - ingredient.quantity_used
+                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
                     ingredient_capacity.append(math.floor(avl/self.spices_reqd))
                     if avl < req:
                         messages.append("Spices need {req:.1f}g, pantry contains only {avl:.1f}g".format(req=req, avl = avl))

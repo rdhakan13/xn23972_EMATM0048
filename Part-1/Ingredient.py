@@ -39,6 +39,15 @@ class Ingredient:
     def get_pantry_cost_rate(self):
         return self.pantry_cost_rate
     
+    def get_quantity_used(self):
+        return Ingredient.quantity_used
+    
+    def increase_quantity_used(self, demand:int, requirement):
+        Ingredient.quantity_used += (demand*requirement)
+
+    def reset_quantity_used(self):
+        Ingredient.quantity_used = 0
+
     def refill_supplier_cost(self):
         if self.name.lower() == "milk":
             self.supplier_cost = Supplier.get_milk_rate()*Ingredient.quantity_used
@@ -50,5 +59,4 @@ class Ingredient:
             self.supplier_cost = Supplier.get_spices_rate()*Ingredient.quantity_used
             return self.supplier_cost
     
-    # def pantry
-        
+    # def pantry_cost(self):

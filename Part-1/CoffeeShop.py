@@ -46,9 +46,9 @@ class CoffeeShop:
         }
 
     def print_header(self):
-        print("================================================================")
-        print(f"====================== SIMULATING MONTH {self.simulation_months} ======================")
-        print("================================================================")    
+        print("==========================================================================")
+        print(f"=========================== SIMULATING MONTH {self.simulation_months} ===========================")
+        print("==========================================================================")    
 
     def bartista_selection(self):
         valid_response = False
@@ -132,15 +132,16 @@ class CoffeeShop:
                         if sufficient_supply is True:
                             list_of_baristas = list(CoffeeShop.chosen_baristas.values())
                             for i, barista in enumerate(list_of_baristas):
-                                if barista.hrs_worked!=80:
-                                    avl = Fraction(80) - Fraction(barista.hrs_worked)
+                                if barista.get_hrs_worked()!=80:
+                                    avl = Fraction(80) - Fraction(barista.get_hrs_worked())
                                     if avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):
-                                        barista.hrs_worked += (Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)
+                                        hrs = (Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)
+                                        barista.increase_hrs_worked(hrs)
                                         break
                                     else:
                                         rem = demand - avl
-                                        barista.hrs_worked += avl
-                                        list_of_baristas[i+1].hrs += rem
+                                        barista.increase_hrs_worked(avl)
+                                        list_of_baristas[i+1].increase_hrs_worked(rem)
                                         break
                             for ingredient in list(self.ingredients.values()):
                                 if ingredient.get_name() == "Milk":
@@ -149,6 +150,7 @@ class CoffeeShop:
                                     ingredient.quantity_used += demand*coffee.get_beans_reqd()
                                 else:
                                     ingredient.quantity_used += demand*coffee.get_spices_reqd()
+                            coffee.increase_sold_quantity(demand)
                     else:
                         print("Please enter an integer greater than or equal to 0!")
                 except:
