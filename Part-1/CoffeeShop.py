@@ -2,6 +2,7 @@ from Ingredient import Ingredient
 from Supplier import Supplier
 from Barista import Barista
 from CoffeeType import CoffeeType
+from fractions import Fraction
 
 class CoffeeShop:
     """
@@ -120,7 +121,7 @@ class CoffeeShop:
         for coffee in list(self.coffeetypes.values()):
             valid_response = False
             sufficient_supply = False
-            while valid_response is False and sufficient_supply is False:
+            while valid_response is False or sufficient_supply is False:
                 try:
                     demand = int(input(f"Coffee {coffee.get_name()}, demand {coffee.get_mon_dem()}, how much to sell: "))
                     if demand > coffee.get_mon_dem():
@@ -129,27 +130,25 @@ class CoffeeShop:
                         sufficient_supply = coffee.check_supply(demand, CoffeeShop.chosen_baristas, self.ingredients)
                         valid_response = True
                         if sufficient_supply is True:
-
                             list_of_baristas = list(CoffeeShop.chosen_baristas.values())
                             for i, barista in enumerate(list_of_baristas):
                                 if barista.hrs_worked!=80:
-                                    avl = 80 - barista.hrs_worked
-                                    if avl >= ((demand*coffee.get_prep_time())/60):
-                                        barista.hrs_worked += ((demand*coffee.get_prep_time())/60)
+                                    avl = Fraction(80) - Fraction(barista.hrs_worked)
+                                    if avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):
+                                        barista.hrs_worked += (Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)
                                         break
                                     else:
                                         rem = demand - avl
                                         barista.hrs_worked += avl
                                         list_of_baristas[i+1].hrs += rem
                                         break
-
                             for ingredient in list(self.ingredients.values()):
                                 if ingredient.get_name() == "Milk":
-                                    ingredient.quantity_used = demand*coffee.get_milk_reqd()
+                                    ingredient.quantity_used += demand*coffee.get_milk_reqd()
                                 elif ingredient.get_name() == "Beans":
-                                    ingredient.quantity_used = demand*coffee.get_beans_reqd()
+                                    ingredient.quantity_used += demand*coffee.get_beans_reqd()
                                 else:
-                                    ingredient.quantity_used = demand*coffee.get_spices_reqd()
+                                    ingredient.quantity_used += demand*coffee.get_spices_reqd()
                     else:
                         print("Please enter an integer greater than or equal to 0!")
                 except:
