@@ -23,7 +23,7 @@ class CoffeeShop:
     info(additional=""):
         Prints the person's name and age.
     """
-    chosen_baristas = {}
+    # chosen_baristas = {}
     # current_cash = 10000
 
     def __init__(self, name:str, simulation_months:int):
@@ -31,6 +31,7 @@ class CoffeeShop:
         self.simulation_months = simulation_months
         self.current_cash = 10000
         self.fixed_monthly_rent = 1500
+        self.chosen_baristas = {}
         self.coffeetypes = {
             "Expresso": CoffeeType("Expresso", 0, 8, 0, 3, 500, 1.5),
             "Americano": CoffeeType("Americano", 0, 6, 0, 2, 200, 2.5),
@@ -55,7 +56,7 @@ class CoffeeShop:
 
     def select_barista(self):
         valid_response = False
-        if not CoffeeShop.chosen_baristas:
+        if not self.chosen_baristas:
             while valid_response is False:
                 try:
                     no_of_baristas = int(input("Please enter the number of baristas to add: "))
@@ -69,11 +70,11 @@ class CoffeeShop:
                             while name_exists is True:
                                 name = input("Please enter barista name: ")
                                 if name.strip()!="":
-                                    if name in CoffeeShop.chosen_baristas:
+                                    if name in self.chosen_baristas:
                                         print("Barista name already exists, please enter a unique name")
                                     else:
-                                        CoffeeShop.chosen_baristas.update({name:Barista(name)})
-                                        print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
+                                        self.chosen_baristas.update({name:Barista(name)})
+                                        print(f"Added {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                         name_exists = False
                         valid_response = True
                 except:
@@ -83,44 +84,44 @@ class CoffeeShop:
                 try:
                     add_or_remove = int(input("To add barista(s) enter a positive integer (e.g. 2), to remove barista(s) enter a negative integer (e.g. -2), no change enter '0'."))
                     if add_or_remove > 0:
-                        if (add_or_remove + len(CoffeeShop.chosen_baristas)) > 4:
-                            print(f"The shop can only take a maximum of 4 baristas at a time, currently there are {len(CoffeeShop.chosen_baristas)}")
+                        if (add_or_remove + len(self.chosen_baristas)) > 4:
+                            print(f"The shop can only take a maximum of 4 baristas at a time, currently there are {len(self.chosen_baristas)}")
                         else:
                             for i in range(abs(add_or_remove)):
                                 name_exists = True
                                 while name_exists is True:
                                     name = input("Please enter barista name: ")
                                     if name.strip()!="":
-                                        if name in CoffeeShop.chosen_baristas:
+                                        if name in self.chosen_baristas:
                                             print("Barista name already exists, please enter a unique name")
                                         else:
-                                            CoffeeShop.chosen_baristas.update({name:Barista(name)})
-                                            print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
+                                            self.chosen_baristas.update({name:Barista(name)})
+                                            print(f"Added {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                             name_exists = False
                             valid_response = True
                     elif add_or_remove < 0:
-                        if (add_or_remove + len(CoffeeShop.chosen_baristas)) <= 0:
-                            print(f"The shop must have at least 1 barista, currently there are {len(CoffeeShop.chosen_baristas)}")
+                        if (add_or_remove + len(self.chosen_baristas)) <= 0:
+                            print(f"The shop must have at least 1 barista, currently there are {len(self.chosen_baristas)}")
                         else:
                             for i in range(abs(add_or_remove)):
                                 name_exists = False
                                 while name_exists is False:
                                     name = input("Please enter barista name: ")
                                     if name.strip()!="":
-                                        if name in CoffeeShop.chosen_baristas:
-                                            print(f"Removed {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
-                                            del CoffeeShop.chosen_baristas[name]
+                                        if name in self.chosen_baristas:
+                                            print(f"Removed {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
+                                            del self.chosen_baristas[name]
                                             name_exists = True
                                         else:
                                             print("Please enter a valid barista name. Here are the current baristas: ")
-                                            print(*(list(CoffeeShop.chosen_baristas.keys())), sep = ", ") 
+                                            print(*(list(self.chosen_baristas.keys())), sep = ", ") 
                             valid_response = True
                     else:
                         valid_response = True
                 except:
                     print("Please enter an integer")
     
-    def request_coffee_demand(self):
+    def attend_coffee_demand(self):
         for coffee in list(self.coffeetypes.values()):
             valid_response = False
             sufficient_supply = False
@@ -130,10 +131,10 @@ class CoffeeShop:
                     if demand > coffee.get_mon_dem():
                         print(f"Please enter a value less than or equal to {coffee.get_mon_dem()}")
                     elif demand >=0:
-                        sufficient_supply = coffee.check_supply(demand, CoffeeShop.chosen_baristas, self.ingredients)
+                        sufficient_supply = coffee.check_supply(demand, self.chosen_baristas, self.ingredients)
                         valid_response = True
                         if sufficient_supply is True:
-                            list_of_baristas = list(CoffeeShop.chosen_baristas.values())
+                            list_of_baristas = list(self.chosen_baristas.values())
                             for i, barista in enumerate(list_of_baristas):
                                 if barista.get_hrs_worked()!=80:
                                     avl = Fraction(80) - Fraction(barista.get_hrs_worked())
@@ -142,7 +143,7 @@ class CoffeeShop:
                                         barista.increase_hrs_worked(hrs)
                                         break
                                     else:
-                                        rem = demand - avl
+                                        rem = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)) - avl
                                         barista.increase_hrs_worked(avl)
                                         list_of_baristas[i+1].increase_hrs_worked(rem)
                                         break
@@ -154,11 +155,16 @@ class CoffeeShop:
                 except:
                     print("Please enter an integer greater than or equal to 0!")
     
-    # def status(self):
-    #     for ingredient in list(self.ingredients.values()):
-    #         print(ingredient.get_quantity_used())
+    def status(self):
+        print(f"Shop Name: {self.name}, Cash: £{self.current_cash:.2f}")
+        print("\t Pantry")
+        for ingredient in list(self.ingredients.values()):
+            print(f"\t\t {ingredient.get_name()}, remaining {ingredient.get_leftover_quantity():.2f} (capacity = {ingredient.get_capacity()})")
+        print("\t Barista")
+        for barista in list(self.chosen_baristas.values()):
+            print(f"\t\tBarista {barista.get_name()}, hourly rate = £{barista.get_rate_per_hour():.2f}")
 
-    def make_payments(self, shop_name:str):
+    def pay_expenses(self):
         bankrupt = False
         for coffee in list(self.coffeetypes.values()):
             self.current_cash = coffee.calculate_income(self.current_cash)
@@ -169,9 +175,9 @@ class CoffeeShop:
         else:
             self.current_cash -= self.fixed_monthly_rent
             print(f"Paid rent/utilities £{self.fixed_monthly_rent:.2f}")
-            for barista in list(CoffeeShop.chosen_baristas.values()):
+            for barista in list(self.chosen_baristas.values()):
                 if barista.get_paid(self.current_cash)<0:
-                    print("Insufficient cash to pay baristas!")
+                    print(f"Insufficient cash to pay {barista.get_name()}!")
                     bankrupt = True
                     break
                 else:
@@ -182,7 +188,7 @@ class CoffeeShop:
             else:
                 for ingredient in list(self.ingredients.values()):
                     if ingredient.calculate_pantry_cost(self.current_cash)<0:
-                        print("Insufficient cash to pay pantry costs!")
+                        print(f"Insufficient cash to pay pantry costs for {ingredient.get_name()}!")
                         bankrupt = True
                         break
                     else:
@@ -191,12 +197,22 @@ class CoffeeShop:
                 if bankrupt is True:
                     return bankrupt
                 else:
-                    print(f"Shop Name: {shop_name}, Cash: £{self.current_cash:.2f}")
-                    print("\t Pantry")
+                    CoffeeShop.status(self)
+                    valid_response = False
+                    while valid_response is False:
+                        print("Supplier list:")
+                        print(*(list(self.chosen_baristas.keys())), sep = ", ") 
+                        supplier_choose = input("Please select a supplier from the above list: ")
+                        if supplier_choose.lower() in self.suppliers:
+                            valid_response = True
+                        else:
+                            print("Supplier does not exist!")
                     for ingredient in list(self.ingredients.values()):
-                        print(f"\t\t {ingredient.get_name()}, remaining {ingredient.get_leftover_quantity():.2f} (capacity = {ingredient.get_capacity()})")
-                    print("\t Barista")
-                    for barista in list(CoffeeShop.chosen_baristas.values()):
-                        print(f"\t\tBarista {barista.get_name()}, hourly rate = £{barista.get_rate_per_hour():.2f}")
-                    
-                        
+                        if ingredient.order_from_supplier(supplier_choose, self.current_cash) < 0:
+                            print (f"Insufficient cash to restock {ingredient.get_name()}!")
+                            bankrupt = True
+                        else:
+                            self.current_cash = ingredient.order_from_supplier(supplier_choose, self.current_cash)
+                    if bankrupt is True:
+                        return bankrupt
+                    else:

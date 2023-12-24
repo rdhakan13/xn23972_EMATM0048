@@ -20,7 +20,6 @@ class CoffeeType:
     info(additional=""):
         Prints the person's name and age.
     """
-    
     def __init__(self, name:str, milk_reqd:float, beans_reqd:int, spices_reqd:int, prep_time:int, mon_dem:int, sell_price:float):
         self.name = name
         self.milk_reqd = milk_reqd

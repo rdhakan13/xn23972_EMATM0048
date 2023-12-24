@@ -17,9 +17,7 @@ class Barista:
     info(additional=""):
         Prints the person's name and age.
     """
-    # hrs_worked = 0
-
-    def __init__(self, name:str):
+    def __init__(self,name):
         self.name = name
         self.hrs_paid = 120
         self.rate_per_hour = 15

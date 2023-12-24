@@ -19,8 +19,6 @@ class Ingredient:
     info(additional=""):
         Prints the person's name and age.
     """
-    # quantity_used = 0
-
     def __init__(self, name:str, capacity:int, deprec:float, pantry_cost_rate:float):
         self.name = name
         self.capacity = capacity
@@ -66,15 +64,18 @@ class Ingredient:
     def get_leftover_quantity(self):
         return self.leftover
     
-    # def order_from_supplier(self, suppliers_list:dict):
-    #     leftover = self.capacity - Ingredient.quantity_used
-    #     Ingredient.quantity_used += math.ceil(leftover*self.deprec)
-    #     if self.name.lower() == "milk":
-    #         self.supplier_cost = Supplier.get_milk_rate()*Ingredient.quantity_used
-    #         return self.supplier_cost
-    #     elif self.name.lower() == "beans":
-    #         self.supplier_cost = Supplier.get_beans_rate()*Ingredient.quantity_used
-    #         return self.supplier_cost
-    #     else:
-    #         self.supplier_cost = Supplier.get_spices_rate()*Ingredient.quantity_used
-    #         return self.supplier_cost
+    def order_from_supplier(self, supplier, current_cash):
+        leftover = self.capacity - self.quantity_used
+        self.quantity_used += math.ceil(leftover*self.deprec)
+        if self.name.lower() == "milk":
+            current_cash -= supplier.get_milk_rate()*self.quantity_used
+            return current_cash
+        elif self.name.lower() == "beans":
+            current_cash -= supplier.get_beans_rate()*self.quantity_used
+            return current_cash
+        else:
+            current_cash -= supplier.get_spices_rate()*self.quantity_used
+            return current_cash
+    
+    def get_supplier_cost(self):
+        return self.supplier_cost
