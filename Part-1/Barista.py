@@ -17,11 +17,14 @@ class Barista:
     info(additional=""):
         Prints the person's name and age.
     """
-    def __init__(self,name):
-        self.name = name
+    def __init__(self):
+        self.name = ""
         self.hrs_paid = 120
         self.rate_per_hour = 15
         self.hrs_worked = 0
+
+    def set_name(self,name):
+        self.name = name
 
     def get_name(self):
         return self.name
@@ -37,12 +40,11 @@ class Barista:
     
     def increase_hrs_worked(self, hrs):
         self.hrs_worked += hrs
-
+    
     def reset_hrs_worked(self):
         self.hrs_worked = 0
-    
+
     def get_paid(self, current_cash:float):
-        self.hrs_worked = 0
         self.salary = self.rate_per_hour*self.hrs_paid
         current_cash -= self.salary
         return current_cash

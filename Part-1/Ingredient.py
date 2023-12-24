@@ -64,18 +64,40 @@ class Ingredient:
     def get_leftover_quantity(self):
         return self.leftover
     
+    # def check_cash_level(self,current_cash:float,pantry_cost:bool, supplier):
+    #     sufficient_cash = True
+    #     self.leftover = self.capacity - self.quantity_used
+    #     if pantry_cost is True:
+    #         self.pantry_cost = self.pantry_cost_rate*self.leftover
+    #         if (current_cash - self.pantry_cost)<0:
+    #             sufficient_cash = False
+    #             return sufficient_cash
+    #         else:
+    #             return sufficient_cash
+    #     else:
+    #         quantity_used = self.quantity_used + math.ceil(self.leftover*self.deprec)
+    #         if self.name.lower() == "milk":
+    #             current_cash -= supplier.get_milk_rate()*self.quantity_used
+    #             self.quantity_used = 0
+    #             return current_cash
+    #         elif self.name.lower() == "beans":
+    #             current_cash -= supplier.get_beans_rate()*self.quantity_used
+    #             self.quantity_used = 0
+    #             return current_cash
+    #         else:
+    #             current_cash -= supplier.get_spices_rate()*self.quantity_used
+    #             self.quantity_used = 0
+    #             return current_cash
+
     def order_from_supplier(self, supplier, current_cash):
         leftover = self.capacity - self.quantity_used
-        self.quantity_used += math.ceil(leftover*self.deprec)
+        quantity_used = self.quantity_used + math.ceil(leftover*self.deprec)
         if self.name.lower() == "milk":
-            current_cash -= supplier.get_milk_rate()*self.quantity_used
+            current_cash -= supplier.get_milk_rate()*quantity_used
             return current_cash
         elif self.name.lower() == "beans":
-            current_cash -= supplier.get_beans_rate()*self.quantity_used
+            current_cash -= supplier.get_beans_rate()*quantity_used
             return current_cash
         else:
-            current_cash -= supplier.get_spices_rate()*self.quantity_used
+            current_cash -= supplier.get_spices_rate()*quantity_used
             return current_cash
-    
-    def get_supplier_cost(self):
-        return self.supplier_cost

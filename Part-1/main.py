@@ -34,12 +34,11 @@ while run_simulation is True:
         Coffeeshop.print_header()
         Coffeeshop.select_barista()
         Coffeeshop.attend_coffee_demand()
-        Coffeeshop.pay_expenses()
+        bankrupt = Coffeeshop.pay_expenses()
         if bankrupt is True:
             print(f"Went bankrupt in month {month}")
             break
 
-                
     run_simulation_response = False
     positive_response = ["y","yes"]
     negative_response = ["n","no"]

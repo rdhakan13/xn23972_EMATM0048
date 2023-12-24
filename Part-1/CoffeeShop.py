@@ -73,7 +73,9 @@ class CoffeeShop:
                                     if name in self.chosen_baristas:
                                         print("Barista name already exists, please enter a unique name")
                                     else:
-                                        self.chosen_baristas.update({name:Barista(name)})
+                                        barista = Barista()
+                                        barista.set_name(name)
+                                        self.chosen_baristas.update({name:barista})
                                         print(f"Added {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                         name_exists = False
                         valid_response = True
@@ -95,7 +97,9 @@ class CoffeeShop:
                                         if name in self.chosen_baristas:
                                             print("Barista name already exists, please enter a unique name")
                                         else:
-                                            self.chosen_baristas.update({name:Barista(name)})
+                                            barista = Barista()
+                                            barista.set_name(name)
+                                            self.chosen_baristas.update({name:barista})
                                             print(f"Added {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                             name_exists = False
                             valid_response = True
@@ -170,6 +174,7 @@ class CoffeeShop:
             self.current_cash = coffee.calculate_income(self.current_cash)
         if (self.current_cash - self.fixed_monthly_rent) < 0:
             print("Insufficient cash to make utilities payment!")
+            print(f"Require £{self.fixed_monthly_rent:.2f}, but only have £{self.current_cash:.2f}!")
             bankrupt = True
             return bankrupt
         else:
@@ -177,18 +182,23 @@ class CoffeeShop:
             print(f"Paid rent/utilities £{self.fixed_monthly_rent:.2f}")
             for barista in list(self.chosen_baristas.values()):
                 if barista.get_paid(self.current_cash)<0:
-                    print(f"Insufficient cash to pay {barista.get_name()}!")
+                    temp_value = self.current_cash - barista.get_paid(self.current_cash)
+                    print(f"BANKRUPT: Insufficient cash to pay {barista.get_name()}!")
+                    print(f"Require £{(temp_value):.2f}, but only have £{self.current_cash:.2f}!")
                     bankrupt = True
                     break
                 else:
                     self.current_cash = barista.get_paid(self.current_cash)
+                    barista.reset_hrs_worked()
                     print(f"Paid {barista.get_name()}, hourly rate = £{barista.get_rate_per_hour():.2f}, amount £{(barista.get_hrs_paid()*barista.get_rate_per_hour()):.2f}")
             if bankrupt is True:
                 return bankrupt
             else:
                 for ingredient in list(self.ingredients.values()):
                     if ingredient.calculate_pantry_cost(self.current_cash)<0:
-                        print(f"Insufficient cash to pay pantry costs for {ingredient.get_name()}!")
+                        temp_value = self.current_cash - ingredient.calculate_pantry_cost(self.current_cash)
+                        print(f"BANKRUPT: Insufficient cash to pay pantry costs for {ingredient.get_name()}!")
+                        print(f"Require £{(temp_value):.2f}, but only have £{self.current_cash:.2f}!")
                         bankrupt = True
                         break
                     else:
@@ -201,18 +211,27 @@ class CoffeeShop:
                     valid_response = False
                     while valid_response is False:
                         print("Supplier list:")
-                        print(*(list(self.chosen_baristas.keys())), sep = ", ") 
+                        print(*(list(self.suppliers.keys())), sep = ", ") 
                         supplier_choose = input("Please select a supplier from the above list: ")
-                        if supplier_choose.lower() in self.suppliers:
+                        if supplier_choose.strip() in self.suppliers:
                             valid_response = True
                         else:
                             print("Supplier does not exist!")
                     for ingredient in list(self.ingredients.values()):
-                        if ingredient.order_from_supplier(supplier_choose, self.current_cash) < 0:
-                            print (f"Insufficient cash to restock {ingredient.get_name()}!")
+                        if ingredient.order_from_supplier(self.suppliers[supplier_choose], self.current_cash) < 0:
+                            temp_value = self.current_cash - ingredient.order_from_supplier(supplier_choose, self.current_cash)
+                            print (f"BANKRUPT: Insufficient cash to restock {ingredient.get_name()}!")
+                            print (f"Require £{(temp_value):.2f}, but only have £{self.current_cash:.2f}!")
                             bankrupt = True
                         else:
-                            self.current_cash = ingredient.order_from_supplier(supplier_choose, self.current_cash)
+                            self.current_cash = ingredient.order_from_supplier(self.suppliers[supplier_choose], self.current_cash)
+                            ingredient.reset_quantity_used()
                     if bankrupt is True:
                         return bankrupt
                     else:
+                        print("All expenses have been paid!")
+                        print("All ingredients have been fully restocked.")
+                        print(f"MONTH {self.simulation_months} FINAL BALANCE: {self.current_cash:.2f}")
+                        print('--------------------------------------------------------------------------')
+                        print(" ")
+                        return bankrupt
