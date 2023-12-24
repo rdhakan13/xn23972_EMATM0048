@@ -11,6 +11,8 @@ class Barista:
         number of hours a barista gets paid for
     rate_per_hour : float
         £ per hour a barista earns
+    salary : float
+        total earnings of a barista
     hrs_worked : float
         number of hours a barista works for (maximum is 80hrs)
     """
@@ -19,6 +21,7 @@ class Barista:
         self.name = ""
         self.hrs_paid = 120
         self.rate_per_hour = 15
+        self.salary = self.rate_per_hour*self.hrs_paid
         self.hrs_worked = 0
 
     def set_name(self, name:str):
@@ -84,6 +87,5 @@ class Barista:
         -------
         Updated value of the shop's cash after taking the wage out
         """
-        self.salary = self.rate_per_hour*self.hrs_paid
         current_cash -= self.salary
         return current_cash

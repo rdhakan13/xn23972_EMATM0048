@@ -25,7 +25,9 @@ class Ingredient:
         self.deprec = deprec
         self.pantry_cost_rate = pantry_cost_rate
         self.quantity_used = 0
-    
+        self.leftover = self.capacity - self.quantity_used
+        self.pantry_cost = self.pantry_cost_rate*self.leftover
+  
     def get_name(self):
         """Returns ingredient's name."""
         return self.name
@@ -47,6 +49,20 @@ class Ingredient:
         return self.quantity_used
     
     def increase_quantity_used(self, demand:int, coffeetype):
+        """
+        Calculates the updated quantity used by the ingredient based on serving the demand.
+
+        Parameters
+        ----------
+        demand : int
+            quantity of a particular coffee asked for
+        coffeetype : class
+            CoffeeType class
+
+        Returns
+        -------
+        None
+        """
         if self.name == "Milk":
             self.quantity_used += (demand*coffeetype.get_milk_reqd())
         elif self.name == "Beans":
@@ -57,10 +73,22 @@ class Ingredient:
     def reset_quantity_used(self):
         """Resets ingredient's quantity used to 0."""
         self.quantity_used = 0
-    
+
     def calculate_pantry_cost(self, current_cash:float):
-        self.leftover = self.capacity - self.quantity_used
-        self.pantry_cost = self.pantry_cost_rate*self.leftover
+        """
+        Calculates the pantry cost of the ingredient using its pantry cost rate.
+
+        Parameters
+        ----------
+        current_cash : float
+            current amount of cash (£) held by the shop
+
+        Returns
+        -------
+        Updated value of the shop's cash after taking out the pantry cost. 
+        """
+        # self.leftover = self.capacity - self.quantity_used
+        # self.pantry_cost = self.pantry_cost_rate*self.leftover
         current_cash -= self.pantry_cost
         return current_cash
     
@@ -72,7 +100,22 @@ class Ingredient:
         """Returns the unused quantity of the ingredient."""
         return self.leftover
 
-    def order_from_supplier(self, supplier, current_cash):
+    def order_from_supplier(self, supplier, current_cash:float):
+        """
+        For restocking the ingredient to its maximum capacity, order_from_supplier calculates
+        the total quantity to be ordered from the supplier and the respective cost.
+
+        Parameters
+        ----------
+        supplier : class
+            Supplier class
+        current_cash : float
+            current amount of cash (£) held by the shop
+
+        Returns
+        -------
+        Updated value of the shop's cash after restocking from supplier
+        """
         leftover = self.capacity - self.quantity_used
         quantity_used = self.quantity_used + math.ceil(leftover*self.deprec)
         if self.name.lower() == "milk":
