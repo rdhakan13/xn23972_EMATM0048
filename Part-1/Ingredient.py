@@ -2,24 +2,24 @@ import math
 
 class Ingredient:
     """
-    TODO: CoffeeShop class definition
+    A class to represent ingredient and its attributes.
     ...
     
-    Attributes (TODO)
+    Attributes
     ----------
     name : str
-        first name of the person
-    surname : str
-        family name of the person
-    age : int
-        age of the person
-    
-    Methods (TODO)
-    -------
-    info(additional=""):
-        Prints the person's name and age.
+        name of the ingredient
+    capacity : int
+        maximum quantity of the ingredient that the shop can hold
+    deprec : float
+        quantity per month that the ingredient depreciates (i.e. goes bad) at the end of each month
+    pantry_cost_rate : float
+        cost incurred by the leftover quantity of ingredient per month
+    quantity_used : float
+        quantity of the ingredient used up
     """
     def __init__(self, name:str, capacity:int, deprec:float, pantry_cost_rate:float):
+        """Constructs all the necessary attributes for the ingredient object."""
         self.name = name
         self.capacity = capacity
         self.deprec = deprec
@@ -27,29 +27,35 @@ class Ingredient:
         self.quantity_used = 0
     
     def get_name(self):
+        """Returns ingredient's name."""
         return self.name
     
     def get_capacity(self):
+        """Returns ingredient's maximum quantity."""
         return self.capacity
     
     def get_deprec(self):
+        """Returns ingredient's depreciation per month on the leftover quantity."""
         return self.deprec
     
     def get_pantry_cost_rate(self):
+        """Returns ingredient's pantry cost rate."""
         return self.pantry_cost_rate
     
     def get_quantity_used(self):
+        """Returns amount of ingredient used up."""
         return self.quantity_used
     
-    def increase_quantity_used(self, demand:int, coffee):
+    def increase_quantity_used(self, demand:int, coffeetype):
         if self.name == "Milk":
-            self.quantity_used += (demand*coffee.get_milk_reqd())
+            self.quantity_used += (demand*coffeetype.get_milk_reqd())
         elif self.name == "Beans":
-            self.quantity_used += (demand*coffee.get_beans_reqd())
+            self.quantity_used += (demand*coffeetype.get_beans_reqd())
         else:
-            self.quantity_used += (demand*coffee.get_spices_reqd())
+            self.quantity_used += (demand*coffeetype.get_spices_reqd())
 
     def reset_quantity_used(self):
+        """Resets ingredient's quantity used to 0."""
         self.quantity_used = 0
     
     def calculate_pantry_cost(self, current_cash:float):
@@ -59,35 +65,12 @@ class Ingredient:
         return current_cash
     
     def get_pantry_cost(self):
+        """Returns ingredient's total pantry cost."""
         return self.pantry_cost
     
     def get_leftover_quantity(self):
+        """Returns the unused quantity of the ingredient."""
         return self.leftover
-    
-    # def check_cash_level(self,current_cash:float,pantry_cost:bool, supplier):
-    #     sufficient_cash = True
-    #     self.leftover = self.capacity - self.quantity_used
-    #     if pantry_cost is True:
-    #         self.pantry_cost = self.pantry_cost_rate*self.leftover
-    #         if (current_cash - self.pantry_cost)<0:
-    #             sufficient_cash = False
-    #             return sufficient_cash
-    #         else:
-    #             return sufficient_cash
-    #     else:
-    #         quantity_used = self.quantity_used + math.ceil(self.leftover*self.deprec)
-    #         if self.name.lower() == "milk":
-    #             current_cash -= supplier.get_milk_rate()*self.quantity_used
-    #             self.quantity_used = 0
-    #             return current_cash
-    #         elif self.name.lower() == "beans":
-    #             current_cash -= supplier.get_beans_rate()*self.quantity_used
-    #             self.quantity_used = 0
-    #             return current_cash
-    #         else:
-    #             current_cash -= supplier.get_spices_rate()*self.quantity_used
-    #             self.quantity_used = 0
-    #             return current_cash
 
     def order_from_supplier(self, supplier, current_cash):
         leftover = self.capacity - self.quantity_used
