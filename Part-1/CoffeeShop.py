@@ -24,11 +24,12 @@ class CoffeeShop:
         Prints the person's name and age.
     """
     chosen_baristas = {}
-    current_cash = 10000
+    # current_cash = 10000
 
     def __init__(self, name:str, simulation_months:int):
         self.name = name
         self.simulation_months = simulation_months
+        self.current_cash = 10000
         self.fixed_monthly_rent = 1500
         self.coffeetypes = {
             "Expresso": CoffeeType("Expresso", 0, 8, 0, 3, 500, 1.5),
@@ -43,13 +44,16 @@ class CoffeeShop:
             "Beans": Ingredient("Beans", 20000, 0.1, 0.001),
             "Spices": Ingredient("Spices", 4000, 0.1, 0.001)
         }
+        self.suppliers = {
+            "Hasty": Supplier("Hasty", 0.3, 0.1, 0.05)
+        }
 
     def print_header(self):
         print("==========================================================================")
         print(f"=========================== SIMULATING MONTH {self.simulation_months} ===========================")
         print("==========================================================================")    
 
-    def bartista_selection(self):
+    def select_barista(self):
         valid_response = False
         if not CoffeeShop.chosen_baristas:
             while valid_response is False:
@@ -143,32 +147,56 @@ class CoffeeShop:
                                         list_of_baristas[i+1].increase_hrs_worked(rem)
                                         break
                             for ingredient in list(self.ingredients.values()):
-                                if ingredient.get_name() == "Milk":
-                                    ingredient.quantity_used += demand*coffee.get_milk_reqd()
-                                elif ingredient.get_name() == "Beans":
-                                    ingredient.quantity_used += demand*coffee.get_beans_reqd()
-                                else:
-                                    ingredient.quantity_used += demand*coffee.get_spices_reqd()
+                                ingredient.increase_quantity_used(demand,coffee)
                             coffee.increase_sold_quantity(demand)
                     else:
                         print("Please enter an integer greater than or equal to 0!")
                 except:
                     print("Please enter an integer greater than or equal to 0!")
     
-    def make_payments(self):
-        coffee_income = []
+    # def status(self):
+    #     for ingredient in list(self.ingredients.values()):
+    #         print(ingredient.get_quantity_used())
+
+    def make_payments(self, shop_name:str):
+        bankrupt = False
         for coffee in list(self.coffeetypes.values()):
-            coffee_income.append(coffee.get_quantity_sold()*coffee.get_sell_price())
-            coffee.reset_sold_quantity()
-        total_coffee_income = sum(coffee_income)
-        CoffeeShop.current_cash = CoffeeShop.current_cash + total_coffee_income - self.fixed_monthly_rent
-        if CoffeeShop.current_cash < 0:
+            self.current_cash = coffee.calculate_income(self.current_cash)
+        if (self.current_cash - self.fixed_monthly_rent) < 0:
             print("Insufficient cash to make utilities payment!")
+            bankrupt = True
+            return bankrupt
         else:
+            self.current_cash -= self.fixed_monthly_rent
             print(f"Paid rent/utilities £{self.fixed_monthly_rent:.2f}")
             for barista in list(CoffeeShop.chosen_baristas.values()):
-                CoffeeShop.current_cash -= barista.get_paid(CoffeeShop.current_cash)
-                if CoffeeShop.current_cash < 0:
+                if barista.get_paid(self.current_cash)<0:
                     print("Insufficient cash to pay baristas!")
+                    bankrupt = True
                     break
-            for ingredient in list(self.ingredients.values()):
+                else:
+                    self.current_cash = barista.get_paid(self.current_cash)
+                    print(f"Paid {barista.get_name()}, hourly rate = £{barista.get_rate_per_hour():.2f}, amount £{(barista.get_hrs_paid()*barista.get_rate_per_hour()):.2f}")
+            if bankrupt is True:
+                return bankrupt
+            else:
+                for ingredient in list(self.ingredients.values()):
+                    if ingredient.calculate_pantry_cost(self.current_cash)<0:
+                        print("Insufficient cash to pay pantry costs!")
+                        bankrupt = True
+                        break
+                    else:
+                        self.current_cash = ingredient.calculate_pantry_cost(self.current_cash)
+                        print(f"Pantry {ingredient.get_name()} cost £{ingredient.get_pantry_cost():.2f}")
+                if bankrupt is True:
+                    return bankrupt
+                else:
+                    print(f"Shop Name: {shop_name}, Cash: £{self.current_cash:.2f}")
+                    print("\t Pantry")
+                    for ingredient in list(self.ingredients.values()):
+                        print(f"\t\t {ingredient.get_name()}, remaining {ingredient.get_leftover_quantity():.2f} (capacity = {ingredient.get_capacity()})")
+                    print("\t Barista")
+                    for barista in list(CoffeeShop.chosen_baristas.values()):
+                        print(f"\t\tBarista {barista.get_name()}, hourly rate = £{barista.get_rate_per_hour():.2f}")
+                    
+                        

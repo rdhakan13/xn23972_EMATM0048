@@ -17,11 +17,11 @@ class Supplier:
     info(additional=""):
         Prints the person's name and age.
     """
-    def __init__(self, name:str):
+    def __init__(self, name:str, milk_rate:float, beans_rate:float, spices_rate:float):
         self.name = name
-        self.milk_rate = 0.3
-        self.beans_rate = 0.1
-        self.spices_rate = 0.05
+        self.milk_rate = milk_rate
+        self.beans_rate = beans_rate
+        self.spices_rate = spices_rate
     
     def get_name(self):
         return self.name

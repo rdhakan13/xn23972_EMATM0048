@@ -20,8 +20,6 @@ class CoffeeType:
     info(additional=""):
         Prints the person's name and age.
     """
-
-    sold = 0
     
     def __init__(self, name:str, milk_reqd:float, beans_reqd:int, spices_reqd:int, prep_time:int, mon_dem:int, sell_price:float):
         self.name = name
@@ -31,6 +29,7 @@ class CoffeeType:
         self.prep_time = prep_time
         self.mon_dem = mon_dem
         self.sell_price = sell_price
+        self.sold = 0
     
     def get_name(self):
         return self.name
@@ -53,8 +52,11 @@ class CoffeeType:
     def get_sell_price(self):
         return self.sell_price
     
+    def get_quantity_sold(self):
+        return self.sold
+
     def increase_sold_quantity(self, demand:int):
-        CoffeeType.sold = demand
+        self.sold = demand
     
     def reset_sold_quantity(self):
         CoffeeType.sold = 0
@@ -125,8 +127,11 @@ class CoffeeType:
         else:
             return sufficient_supply
 
-            
-
+    def calculate_income(self, current_cash:float):
+        coffee_income = self.sold*self.sell_price
+        current_cash += coffee_income
+        self.sold = 0
+        return current_cash
         
 
     

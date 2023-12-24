@@ -30,8 +30,9 @@ while run_simulation is True:
         month += 1
         Coffeeshop = CoffeeShop(shop_name, month)
         Coffeeshop.print_header()
-        Coffeeshop.bartista_selection()
+        Coffeeshop.select_barista()
         Coffeeshop.request_coffee_demand()
+        Coffeeshop.make_payments(shop_name)
                 
     run_simulation_response = False
     positive_response = ["y","yes"]
