@@ -7,8 +7,8 @@ name_given = False
 while run_simulation is True:
 
     while name_given is False:
-        shop_name = input("Please enter your coffee shop name: ")
-        if shop_name.strip()!="":
+        shop_name = input("Please enter your coffee shop name: ").strip()
+        if shop_name!="":
             name_given = True
 
     while valid_response is False:
@@ -45,12 +45,12 @@ while run_simulation is True:
     negative_response = ["n","no"]
     while run_simulation_response is False:
         run_simulation = input("Would you like to run another simulation? Y/N: ")
-        if run_simulation.lower() in positive_response:
+        if run_simulation.lower().strip() in positive_response:
             run_simulation = True
             valid_response = False
             run_simulation_response = True
-        elif run_simulation.lower() in negative_response:
+        elif run_simulation.lower().strip() in negative_response:
             run_simulation = False
             run_simulation_response = True
         else:
-            print("Please enter a valid response")
+            print("Please enter a valid response!")

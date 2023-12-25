@@ -66,9 +66,11 @@ class CoffeeShop:
                     else:
                         for i in range(no_of_baristas):
                             name_exists = True
+                            speciality_valid_response = False
+                            loop_bool = False
                             while name_exists is True:
-                                name = input("Please enter a valid barista name: ")
-                                if name.strip()=="" or not name.isalpha():
+                                name = input("Please enter a valid barista name: ").strip()
+                                if name=="" or not name.isalpha():
                                     print("Please enter a name with no numbers and no special characters!")
                                 else:
                                     if name in CoffeeShop.chosen_baristas:
@@ -77,8 +79,27 @@ class CoffeeShop:
                                         barista = Barista()
                                         barista.set_name(name)
                                         CoffeeShop.chosen_baristas.update({name:barista})
-                                        print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                         name_exists = False
+                            while speciality_valid_response is False:
+                                valid_answers = ["yes","y","no","n"]
+                                print(f"Types of coffee served at {self.name}:")
+                                print(*(list(self.coffeetypes.keys())), sep = ", ")
+                                while loop_bool is False:
+                                    speciality_exists = input("Does this barista have a speciality in any one of the above coffee types? Y/N: ").strip()
+                                    if speciality_exists.lower() in valid_answers:
+                                        loop_bool = True
+                                    else:
+                                        print("Please enter a valid response!")
+                                if speciality_exists.lower()=="y" or speciality_exists.lower()=="yes":
+                                    speciality = input("Please enter the type of coffee: ").strip()
+                                    if speciality in list(self.coffeetypes.keys()):
+                                        barista.set_speciality(speciality)
+                                        speciality_valid_response = True
+                                    else:
+                                        print("Please enter a valid type of coffee! (Note: response is case sensitve)")
+                                else:
+                                    speciality_valid_response = True
+                            print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                         valid_response = True
                 except ValueError:
                     print("Please enter a positive integer!")
@@ -93,9 +114,11 @@ class CoffeeShop:
                         else:
                             for i in range(abs(add_or_remove)):
                                 name_exists = True
+                                speciality_valid_response = False
+                                loop_bool = False
                                 while name_exists is True:
-                                    name = input("Please enter a valid barista name: ")
-                                    if name.strip()=="" or not name.isalpha():
+                                    name = input("Please enter a valid barista name: ").strip()
+                                    if name=="" or not name.isalpha():
                                         print("Please enter a name with no numbers and no special characters!")
                                     else:
                                         if name in CoffeeShop.chosen_baristas:
@@ -104,8 +127,27 @@ class CoffeeShop:
                                             barista = Barista()
                                             barista.set_name(name)
                                             CoffeeShop.chosen_baristas.update({name:barista})
-                                            print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                             name_exists = False
+                                while speciality_valid_response is False:
+                                    valid_answers = ["yes","y","no","n"]
+                                    print(f"Types of coffee served at {self.name}:")
+                                    print(*(list(self.coffeetypes.keys())), sep = ", ")
+                                    while loop_bool is False:
+                                        speciality_exists = input("Does this barista have a speciality in any one of the above coffee types? Y/N: ").strip()
+                                        if speciality_exists.lower() in valid_answers:
+                                            loop_bool = True
+                                        else:
+                                            print("Please enter a valid response!")
+                                    if speciality_exists.lower()=="y" or speciality_exists.lower()=="yes":
+                                        speciality = input("Please enter the type of coffee: ").strip()
+                                        if speciality in list(self.coffeetypes.keys()):
+                                            barista.set_speciality(speciality)
+                                            speciality_valid_response = True
+                                        else:
+                                            print("Please enter a valid type of coffee! (Note: response is case sensitve)")
+                                    else:
+                                        speciality_valid_response = True
+                                print(f"Added {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                             valid_response = True
                     elif add_or_remove < 0:
                         if (add_or_remove + len(CoffeeShop.chosen_baristas)) <= 0:
@@ -114,15 +156,15 @@ class CoffeeShop:
                             for i in range(abs(add_or_remove)):
                                 name_exists = False
                                 while name_exists is False:
-                                    name = input("Please enter barista name: ")
-                                    if name.strip()!="":
+                                    name = input("Please enter barista name: ").strip()
+                                    if name!="":
                                         if name in CoffeeShop.chosen_baristas:
                                             print(f"Removed {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                             del CoffeeShop.chosen_baristas[name]
                                             name_exists = True
                                         else:
                                             print("Please enter a valid barista name. Here are the current baristas: ")
-                                            print(*(list(CoffeeShop.chosen_baristas.keys())), sep = ", ") 
+                                            print(*(list(CoffeeShop.chosen_baristas.keys())), sep = ", ")
                             valid_response = True
                     else:
                         valid_response = True
@@ -216,8 +258,8 @@ class CoffeeShop:
                     while valid_response is False:
                         print("Supplier list: ")
                         print(*(list(self.suppliers.keys())), sep = ", ") 
-                        supplier_choose = input("Please select a supplier from the above list to restock ingredients: ")
-                        if supplier_choose.strip() in self.suppliers:
+                        supplier_choose = input("Please select a supplier from the above list to restock ingredients: ").strip()
+                        if supplier_choose in self.suppliers:
                             valid_response = True
                         else:
                             print("Supplier does not exist! (Note: response is case sensitve)")

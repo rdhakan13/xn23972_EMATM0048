@@ -19,7 +19,7 @@ class Barista:
     def __init__(self):
         """Constructs all the necessary attributes for the barista object."""
         self.name = ""
-        self.speciality = ""
+        self.speciality = None
         self.hrs_paid = 120
         self.rate_per_hour = 15
         self.hrs_worked = 0
