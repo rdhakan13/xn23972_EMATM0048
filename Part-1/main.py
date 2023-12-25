@@ -10,7 +10,7 @@ while run_simulation is True:
         shop_name = input("Please enter your coffee shop name: ")
         if shop_name.strip()!="":
             name_given = True
- 
+
     while valid_response is False:
         no_of_simulation_months = input("Please enter number of months to simulate the coffee shop (default is 6): ")
         if no_of_simulation_months.strip()=="":
@@ -23,9 +23,9 @@ while run_simulation is True:
                     valid_response = True
                 else:
                     print("Please enter a positive integer")
-            except:
+            except ValueError:
                 print("Please enter a positive integer")
-    
+
     bankrupt = False
 
     for month in range(no_of_simulation_months):
@@ -37,6 +37,7 @@ while run_simulation is True:
         bankrupt = Coffeeshop.pay_expenses()
         if bankrupt is True:
             print(f"Went bankrupt in month {month}")
+            print("")
             break
 
     run_simulation_response = False
