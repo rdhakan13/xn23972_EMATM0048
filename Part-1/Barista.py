@@ -11,8 +11,6 @@ class Barista:
         number of hours a barista gets paid for
     rate_per_hour : float
         £ per hour a barista earns
-    salary : float
-        total earnings of a barista
     hrs_worked : float
         number of hours a barista works for (maximum is 80hrs)
     """
@@ -21,7 +19,6 @@ class Barista:
         self.name = ""
         self.hrs_paid = 120
         self.rate_per_hour = 15
-        self.salary = self.rate_per_hour*self.hrs_paid
         self.hrs_worked = 0
 
     def set_name(self, name:str):
@@ -42,19 +39,19 @@ class Barista:
     def get_name(self):
         """Returns barista's name."""
         return self.name
-    
+
     def get_hrs_paid(self):
         """Returns the number of hours a barista gets paid for."""
         return self.hrs_paid
-    
+
     def get_rate_per_hour(self):
         """Returns £ per hour charge of a barista."""
         return self.rate_per_hour
-    
+
     def get_hrs_worked(self):
         """Returns the number of hours a barista has worked for."""
         return self.hrs_worked
-    
+
     def increase_hrs_worked(self, hrs):
         """
         Increases number of hours a barista has worked for.
@@ -69,7 +66,7 @@ class Barista:
         None
         """
         self.hrs_worked += hrs
-    
+
     def reset_hrs_worked(self):
         """Resets the number of hours a barista has worked for to 0."""
         self.hrs_worked = 0
@@ -87,5 +84,7 @@ class Barista:
         -------
         Updated value of the shop's cash after taking the wage out
         """
-        current_cash -= self.salary
+        salary = self.rate_per_hour*self.hrs_paid
+        current_cash -= salary
         return current_cash
+    

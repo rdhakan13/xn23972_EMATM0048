@@ -15,6 +15,10 @@ class Ingredient:
         quantity per month that the ingredient depreciates (i.e. goes bad) at the end of each month
     pantry_cost_rate : float
         cost incurred by the leftover quantity of ingredient per month
+    leftover : float
+        unused quantity of the ingredient
+    pantry_cost : float
+        total cost incurred by the leftover quantity of ingredient (i.e leftover x pantry_cost_rate)
     quantity_used : float
         quantity of the ingredient used up
     """
@@ -24,30 +28,30 @@ class Ingredient:
         self.capacity = capacity
         self.deprec = deprec
         self.pantry_cost_rate = pantry_cost_rate
+        self.leftover = 0
+        self.pantry_cost = 0
         self.quantity_used = 0
-        self.leftover = self.capacity - self.quantity_used
-        self.pantry_cost = self.pantry_cost_rate*self.leftover
-  
+
     def get_name(self):
         """Returns ingredient's name."""
         return self.name
-    
+
     def get_capacity(self):
         """Returns ingredient's maximum quantity."""
         return self.capacity
-    
+
     def get_deprec(self):
         """Returns ingredient's depreciation per month on the leftover quantity."""
         return self.deprec
-    
+
     def get_pantry_cost_rate(self):
         """Returns ingredient's pantry cost rate."""
         return self.pantry_cost_rate
-    
+
     def get_quantity_used(self):
         """Returns amount of ingredient used up."""
         return self.quantity_used
-    
+
     def increase_quantity_used(self, demand:int, coffeetype):
         """
         Calculates the updated quantity used by the ingredient based on serving the demand.
@@ -87,15 +91,15 @@ class Ingredient:
         -------
         Updated value of the shop's cash after taking out the pantry cost. 
         """
-        # self.leftover = self.capacity - self.quantity_used
-        # self.pantry_cost = self.pantry_cost_rate*self.leftover
+        self.leftover = self.capacity - self.quantity_used
+        self.pantry_cost = self.pantry_cost_rate*self.leftover
         current_cash -= self.pantry_cost
         return current_cash
-    
+
     def get_pantry_cost(self):
         """Returns ingredient's total pantry cost."""
         return self.pantry_cost
-    
+
     def get_leftover_quantity(self):
         """Returns the unused quantity of the ingredient."""
         return self.leftover
@@ -116,12 +120,11 @@ class Ingredient:
         -------
         Updated value of the shop's cash after restocking from supplier
         """
-        leftover = self.capacity - self.quantity_used
-        quantity_used = self.quantity_used + math.ceil(leftover*self.deprec)
-        if self.name.lower() == "milk":
+        quantity_used = self.quantity_used + math.ceil(self.leftover*self.deprec)
+        if self.name == "Milk":
             current_cash -= supplier.get_milk_rate()*quantity_used
             return current_cash
-        elif self.name.lower() == "beans":
+        elif self.name == "Beans":
             current_cash -= supplier.get_beans_rate()*quantity_used
             return current_cash
         else:
