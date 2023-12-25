@@ -16,7 +16,7 @@ class CoffeeType:
         quantity of beans required (in grams) to make the coffee
     spices_reqd : int
         quantity of spices required (in grams) to make the coffee
-    prep_time : int
+    prep_time : float
         time (in minutes) it takes to prepare the coffee
     mon_dem : int
         the number of coffees demanded in a month
@@ -24,7 +24,7 @@ class CoffeeType:
         unit price of a coffee
     """
     def __init__(self, name:str, milk_reqd:float,beans_reqd:int, spices_reqd:int,
-                 prep_time:int, mon_dem:int, sell_price:float):
+                 prep_time:float, mon_dem:int, sell_price:float):
         """Constructs all the necessary attributes for the student object."""
         self.name = name
         self.milk_reqd = milk_reqd

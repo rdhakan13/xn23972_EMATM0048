@@ -7,6 +7,8 @@ class Barista:
     ----------
     name : str
         name of the barista
+    speciality : str
+        type of coffee that barista has the speciality in making
     hrs_paid : float
         number of hours a barista gets paid for
     rate_per_hour : float
@@ -17,6 +19,7 @@ class Barista:
     def __init__(self):
         """Constructs all the necessary attributes for the barista object."""
         self.name = ""
+        self.speciality = ""
         self.hrs_paid = 120
         self.rate_per_hour = 15
         self.hrs_worked = 0
@@ -39,6 +42,26 @@ class Barista:
     def get_name(self):
         """Returns barista's name."""
         return self.name
+
+    def set_speciality(self, speciality:str):
+        """
+        Takes speciality as input and assigns it to the speciality attribute.
+
+        Parameters
+        ----------
+        speciality : str
+            type of coffee that barista has the speciality in making, as such
+            it only takes half the required time prepare the speciality coffee
+
+        Returns
+        -------
+        None
+        """
+        self.speciality = speciality
+    
+    def get_speciality(self):
+        """Returns the speciality coffee."""
+        return self.speciality
 
     def get_hrs_paid(self):
         """Returns the number of hours a barista gets paid for."""
