@@ -6,28 +6,36 @@ from fractions import Fraction
 
 class CoffeeShop:
     """
-    TODO: CoffeeShop class definition
+    A class to represent types of coffeeshop and its attributes.
     ...
     
-    Attributes (TODO)
+    Attributes
     ----------
     name : str
-        first name of the person
-    surname : str
-        family name of the person
-    age : int
-        age of the person
-    
-    Methods (TODO)
-    -------
-    info(additional=""):
-        Prints the person's name and age.
+        name of the coffee shop
+    simulation_months : int
+        the number of months to run the simulation for
+    fixed_monthly_rent : int
+        monthly rent and utilities cost (£)
+    coffeetypes : dict
+        dictionary of various coffeetypes as described by CoffeeType class
+    ingredients : dict
+        dictionary of ingredients as described by Ingredient class
+    suppliers : dict
+        dictionary of supplier(s) as described by Supplier class
+    current_cash : float
+        cash (£) held by the shop at any given time
+    chosen_barista : dict
+        dictionary of baristas as described by Barista class
     """
-
+    # initialising values outside __init__ to ensure values are carried over from one iteration
+    # of loop to another in main.py
     current_cash = 10000
     chosen_baristas = {}
+    speciality_staff_name = []
 
     def __init__(self, name:str, simulation_months:int):
+        """Constructs all the necessary attributes for the coffeeshop object."""
         self.name = name
         self.simulation_months = simulation_months
         self.fixed_monthly_rent = 1500
@@ -49,6 +57,7 @@ class CoffeeShop:
         }
 
     def print_header(self):
+        """Prints out the header at the beginning of each month."""
         print("==========================================================================")
         print(f"=========================== SIMULATING MONTH {self.simulation_months} ===========================")
         print("==========================================================================")    
@@ -94,6 +103,7 @@ class CoffeeShop:
                                     speciality = input("Please enter the type of coffee: ").strip()
                                     if speciality in list(self.coffeetypes.keys()):
                                         barista.set_speciality(speciality)
+                                        CoffeeShop.speciality_staff_name.append(barista.get_name())
                                         speciality_valid_response = True
                                     else:
                                         print("Please enter a valid type of coffee! (Note: response is case sensitve)")
@@ -142,6 +152,7 @@ class CoffeeShop:
                                         speciality = input("Please enter the type of coffee: ").strip()
                                         if speciality in list(self.coffeetypes.keys()):
                                             barista.set_speciality(speciality)
+                                            CoffeeShop.speciality_staff_name.append(barista.get_name())
                                             speciality_valid_response = True
                                         else:
                                             print("Please enter a valid type of coffee! (Note: response is case sensitve)")
@@ -161,6 +172,8 @@ class CoffeeShop:
                                         if name in CoffeeShop.chosen_baristas:
                                             print(f"Removed {name}, hourly rate = £{CoffeeShop.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_months}")
                                             del CoffeeShop.chosen_baristas[name]
+                                            if name in CoffeeShop.speciality_staff_name:
+                                                CoffeeShop.speciality_staff_name.remove(name)
                                             name_exists = True
                                         else:
                                             print("Please enter a valid barista name. Here are the current baristas: ")
@@ -170,6 +183,30 @@ class CoffeeShop:
                         valid_response = True
                 except ValueError:
                     print("Please enter an integer")
+
+    def maximise_income(self):
+        list_of_coffeetypes = list(self.coffeetypes.values())
+        n = len(list_of_coffeetypes)
+        # Traverse through all array elements
+        for i in range(n):
+            swapped = False
+            # Last i elements are already in place
+            for j in range(0, n-i-1):
+                # Traverse the array from 0 to n-i-1
+                # Swap if the element found is greater
+                # than the next element
+                j_0 = list_of_coffeetypes[j].get_sell_price()/list_of_coffeetypes[j].get_prep_time()
+                j_1 = list_of_coffeetypes[j+1].get_sell_price()/list_of_coffeetypes[j+1].get_prep_time()
+                if j_0 < j_1:
+                    list_of_coffeetypes[j], list_of_coffeetypes[j+1] = list_of_coffeetypes[j+1], list_of_coffeetypes[j]
+                    swapped = True
+            if swapped is False:
+                break
+        sorted_coffeetype_dict = {}
+        for coffee in list_of_coffeetypes:
+            sorted_coffeetype_dict.update({coffee.get_name():coffee})
+        self.coffeetypes = sorted_coffeetype_dict
+        print(self.coffeetypes)
 
     def attend_coffee_demand(self):
         for coffee in list(self.coffeetypes.values()):
@@ -186,6 +223,7 @@ class CoffeeShop:
                         if sufficient_supply is True:
                             list_of_baristas = list(CoffeeShop.chosen_baristas.values())
                             for i, barista in enumerate(list_of_baristas):
+
                                 if barista.get_hrs_worked()!=80:
                                     avl = Fraction(80) - Fraction(barista.get_hrs_worked())
                                     if avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):

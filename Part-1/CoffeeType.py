@@ -25,7 +25,7 @@ class CoffeeType:
     """
     def __init__(self, name:str, milk_reqd:float,beans_reqd:int, spices_reqd:int,
                  prep_time:float, mon_dem:int, sell_price:float):
-        """Constructs all the necessary attributes for the student object."""
+        """Constructs all the necessary attributes for the coffeetype object."""
         self.name = name
         self.milk_reqd = milk_reqd
         self.beans_reqd = beans_reqd
@@ -92,8 +92,15 @@ class CoffeeType:
         messages = []
         ingredient_capacity = []
         total_time_available = 0
+        time_from_specialist = 0
+        time_required = 0
         for barista in list(baristas_dict.values()):
             total_time_available += Fraction(80) - Fraction(barista.get_hrs_worked())
+            if barista.get_speciality()==self.name:
+                time_required += (Fraction(demand)*(Fraction(self.prep_time)))/Fraction(120)
+                time_from_specialist += Fraction(80) - Fraction(barista.get_hrs_worked())
+            else:
+                time_required += (Fraction(demand)*Fraction(self.prep_time))/Fraction(60)
         for ingredient in list(ingredients.values()):
             if ingredient.get_name() == "Milk":
                 req = demand*self.milk_reqd
@@ -122,14 +129,15 @@ class CoffeeType:
                         messages.append(f"Spices need {req:.1f}g, pantry contains only {avl:.1f}g")
                 else:
                     pass
-        if ((total_time_available < (((Fraction(demand)*Fraction(self.prep_time))/Fraction(60)))) 
-                and not messages):
+        
+        if ((total_time_available < time_required) and not messages):
             sufficient_supply = False
-            capacity = (Fraction(total_time_available)*Fraction(60))/Fraction(self.prep_time)
-            capacity = math.floor(capacity)
+            capacity_normal_staff = (Fraction(total_time_available)-Fraction(time_from_specialist))/(Fraction(self.prep_time)/Fraction(60))
+            capacity_specialist = Fraction(time_from_specialist)/(Fraction(self.prep_time)/Fraction(120))
+            capacity = math.floor(capacity_normal_staff+capacity_specialist)
             print(f"Insufficient labour: quantity requested {demand}, capacity {capacity}")
             return sufficient_supply
-        elif (len(messages)>0 and (total_time_available > (((Fraction(demand)*Fraction(self.prep_time))/Fraction(60))))):
+        elif (len(messages)>0 and (total_time_available > time_required)):
             sufficient_supply = False
             print("Insufficient ingredients: ")
             for message in messages:
@@ -137,9 +145,11 @@ class CoffeeType:
             capacity = min(ingredient_capacity)
             print(f"Capacity is {capacity:.1f}")
             return sufficient_supply
-        elif (total_time_available < (((Fraction(demand)*Fraction(self.prep_time))/Fraction(60)))) and len(messages)>0:
+        elif (total_time_available < time_required) and len(messages)>0:
             sufficient_supply = False
-            barista_capacity = math.floor((Fraction(total_time_available)*Fraction(60))/Fraction(self.prep_time))
+            capacity_normal_staff = (Fraction(total_time_available)-Fraction(time_from_specialist))/(Fraction(self.prep_time)/Fraction(60))
+            capacity_specialist = Fraction(time_from_specialist)/(Fraction(self.prep_time)/Fraction(120))
+            barista_capacity = math.floor(capacity_normal_staff+capacity_specialist)
             if barista_capacity <= min(ingredient_capacity):
                 print(f"Insufficient labour: quantity requested {demand}, capacity {barista_capacity}")
             else:
