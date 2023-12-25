@@ -58,7 +58,7 @@ class Barista:
         None
         """
         self.speciality = speciality
-    
+
     def get_speciality(self):
         """Returns the speciality coffee."""
         return self.speciality
@@ -110,4 +110,3 @@ class Barista:
         salary = self.rate_per_hour*self.hrs_paid
         current_cash -= salary
         return current_cash
-    
