@@ -1,16 +1,23 @@
 from CoffeeShop import CoffeeShop
 
-run_simulation = True
-valid_response = False
-name_given = False
+run_simulation = True # boolean value to continue simulating or not
+valid_response = False # boolean value to check if simulation months inputted is valid
+name_given = False # boolean value to check if shop name is provided or not
 
+# simulation keeps running until user inputs instructs to stop at the end of each loop
 while run_simulation is True:
 
+    # keeps asking for a shop name until user provides one; shop name can be any combination alphabets, numbers,
+    # and or special characters
     while name_given is False:
         shop_name = input("Please enter your coffee shop name: ").strip()
         if shop_name!="":
             name_given = True
+        else:
+            print("No name was given!")
 
+    # keeps asking for the number of months to simulate until a valid response is given; if no response or trailing
+    # spaces is provided then default value of 6 is taken
     while valid_response is False:
         no_of_simulation_months = input("Please enter number of months to simulate the coffee shop (default is 6): ")
         if no_of_simulation_months.strip()=="":
@@ -26,23 +33,28 @@ while run_simulation is True:
             except ValueError:
                 print("Please enter a positive integer")
 
-    bankrupt = False
+    bankrupt = False # boolean value to stop simulation loop if insufficient cash to pay expenses
 
+    # simulating months with CoffeeShop methods
     for month in range(no_of_simulation_months):
         month += 1
         Coffeeshop = CoffeeShop(shop_name, month)
         Coffeeshop.print_header()
         Coffeeshop.select_barista()
+        # Coffeeshop.maximise_income()
         Coffeeshop.attend_coffee_demand()
         bankrupt = Coffeeshop.pay_expenses()
+        # message for the user to know the month when gone bankrupt
         if bankrupt is True:
             print(f"Went bankrupt in month {month}")
             print("")
             break
-
-    run_simulation_response = False
+    
+    run_simulation_response = False # boolean value to check if valid response is given to continue with another simulation
     positive_response = ["y","yes"]
     negative_response = ["n","no"]
+
+    # keeps asking whether to continue with another simulation until a valid response is provided
     while run_simulation_response is False:
         run_simulation = input("Would you like to run another simulation? Y/N: ")
         if run_simulation.lower().strip() in positive_response:
