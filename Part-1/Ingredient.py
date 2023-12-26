@@ -1,4 +1,4 @@
-import math
+import math # used for rounding up depreciated quantity value
 
 class Ingredient:
     """
