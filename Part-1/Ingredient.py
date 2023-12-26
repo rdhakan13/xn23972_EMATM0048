@@ -107,7 +107,8 @@ class Ingredient:
     def order_from_supplier(self, supplier, current_cash:float):
         """
         For restocking the ingredient to its maximum capacity, order_from_supplier calculates
-        the total quantity to be ordered from the supplier and the respective cost.
+        the total quantity to be ordered from the supplier and the respective cost is subtracted
+        from the current cash held by shop.
 
         Parameters
         ----------
@@ -121,6 +122,8 @@ class Ingredient:
         Updated value of the shop's cash after restocking from supplier
         """
         quantity_used = self.quantity_used + math.ceil(self.leftover*self.deprec)
+        if quantity_used > self.capacity:
+            quantity_used = self.capacity
         if self.name == "Milk":
             current_cash -= supplier.get_milk_rate()*quantity_used
             return current_cash

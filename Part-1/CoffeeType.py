@@ -22,6 +22,10 @@ class CoffeeType:
         the number of coffees demanded in a month
     sell_price : float
         unit price of a coffee
+    sold : int
+        quanitity of a coffee type sold
+    speciality_staff : list
+        list of staff name who have speciality in a particular coffee type
     """
     def __init__(self, name:str, milk_reqd:float,beans_reqd:int, spices_reqd:int,
                  prep_time:float, mon_dem:int, sell_price:float):
@@ -34,6 +38,7 @@ class CoffeeType:
         self.mon_dem = mon_dem
         self.sell_price = sell_price
         self.sold = 0
+        self.speciality_staff = []
 
     def get_name(self):
         """Returns the name of coffee type."""
@@ -81,26 +86,32 @@ class CoffeeType:
 
         Parameters
         ----------
-        current_cash : float
-            current amount of cash (£) held by the shop
+        baristas_dict : dict
+            dictionary of baristas as described by Barista class
+        ingredients : dict
+            dictionary of ingredients as described by Ingredient class
 
         Returns
         -------
-        Updated value of the shop's cash after adding the income from selling a type of coffee.
+        sufficient_supply : bool
+            a boolean to indicate whether there is sufficient labour hours and ingredients
         """
-        sufficient_supply = True
-        messages = []
-        ingredient_capacity = []
-        total_time_available = 0
-        time_from_specialist = 0
-        time_required = 0
+        sufficient_supply = True # boolean used
+        messages = [] # list of error messages when ingredients have insufficient capacity
+        ingredient_capacity = [] # list to hold the maximum capacity for each ingredient with current quantities
+        total_time_available = 0 # total time available from all baristas
+        time_from_specialist = 0 # time available from specialist baristas
+
+        # iterating through 
         for barista in list(baristas_dict.values()):
             total_time_available += Fraction(80) - Fraction(barista.get_hrs_worked())
             if barista.get_speciality()==self.name:
-                time_required += (Fraction(demand)*(Fraction(self.prep_time)))/Fraction(120)
                 time_from_specialist += Fraction(80) - Fraction(barista.get_hrs_worked())
-            else:
-                time_required += (Fraction(demand)*Fraction(self.prep_time))/Fraction(60)
+    
+        capacity_normal_staff = (Fraction(total_time_available)-Fraction(time_from_specialist))/(Fraction(self.prep_time)/Fraction(60))
+        capacity_specialist = Fraction(time_from_specialist)/(Fraction(self.prep_time)/Fraction(120))
+        barista_capacity = math.floor(capacity_normal_staff+capacity_specialist)
+
         for ingredient in list(ingredients.values()):
             if ingredient.get_name() == "Milk":
                 req = demand*self.milk_reqd
@@ -130,14 +141,11 @@ class CoffeeType:
                 else:
                     pass
         
-        if ((total_time_available < time_required) and not messages):
+        if ((barista_capacity < demand) and not messages):
             sufficient_supply = False
-            capacity_normal_staff = (Fraction(total_time_available)-Fraction(time_from_specialist))/(Fraction(self.prep_time)/Fraction(60))
-            capacity_specialist = Fraction(time_from_specialist)/(Fraction(self.prep_time)/Fraction(120))
-            capacity = math.floor(capacity_normal_staff+capacity_specialist)
-            print(f"Insufficient labour: quantity requested {demand}, capacity {capacity}")
+            print(f"Insufficient labour: quantity requested {demand}, capacity {barista_capacity}")
             return sufficient_supply
-        elif (len(messages)>0 and (total_time_available > time_required)):
+        elif (len(messages)>0 and (barista_capacity > demand)):
             sufficient_supply = False
             print("Insufficient ingredients: ")
             for message in messages:
@@ -145,11 +153,8 @@ class CoffeeType:
             capacity = min(ingredient_capacity)
             print(f"Capacity is {capacity:.1f}")
             return sufficient_supply
-        elif (total_time_available < time_required) and len(messages)>0:
+        elif (barista_capacity < demand) and len(messages)>0:
             sufficient_supply = False
-            capacity_normal_staff = (Fraction(total_time_available)-Fraction(time_from_specialist))/(Fraction(self.prep_time)/Fraction(60))
-            capacity_specialist = Fraction(time_from_specialist)/(Fraction(self.prep_time)/Fraction(120))
-            barista_capacity = math.floor(capacity_normal_staff+capacity_specialist)
             if barista_capacity <= min(ingredient_capacity):
                 print(f"Insufficient labour: quantity requested {demand}, capacity {barista_capacity}")
             else:
@@ -161,6 +166,18 @@ class CoffeeType:
             return sufficient_supply
         else:
             return sufficient_supply
+
+    def set_speciality_staff(self, name:str):
+        """Assigns name to speciality staff list."""
+        self.speciality_staff.append(name)
+
+    def get_speciality_staff_list(self):
+        """Returns speciality staff list."""
+        return self.speciality_staff
+
+    def remove_speciality_staff(self, name:str):
+        """Removes the given name of staff from speciality staff list."""
+        self.speciality_staff.remove(name)
 
     def calculate_income(self, current_cash:float):
         """

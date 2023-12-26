@@ -10,7 +10,7 @@ while run_simulation is True:
     # keeps asking for a shop name until user provides one; shop name can be any combination alphabets, numbers,
     # and or special characters
     while name_given is False:
-        shop_name = input("Please enter your coffee shop name: ").strip()
+        shop_name = input("Please enter your coffee shop name: ").strip().title()
         if shop_name!="":
             name_given = True
         else:
@@ -35,14 +35,21 @@ while run_simulation is True:
 
     bankrupt = False # boolean value to stop simulation loop if insufficient cash to pay expenses
 
+    # initiating object
+    Coffeeshop = CoffeeShop(shop_name)
+
     # simulating months with CoffeeShop methods
     for month in range(no_of_simulation_months):
         month += 1
-        Coffeeshop = CoffeeShop(shop_name, month)
+        # setting month number
+        Coffeeshop.set_month(month)
+        # printing header
         Coffeeshop.print_header()
+        # selecting barista and their specialities
         Coffeeshop.select_barista()
-        # Coffeeshop.maximise_income()
+        # attending the coffee demand for each coffee types
         Coffeeshop.attend_coffee_demand()
+        # paying utilities/rent, ingredient costs and barista costs
         bankrupt = Coffeeshop.pay_expenses()
         # message for the user to know the month when gone bankrupt
         if bankrupt is True:
@@ -51,17 +58,17 @@ while run_simulation is True:
             break
     
     run_simulation_response = False # boolean value to check if valid response is given to continue with another simulation
-    positive_response = ["y","yes"]
-    negative_response = ["n","no"]
+    positive_response = ["Y","Yes"]
+    negative_response = ["N","No"]
 
     # keeps asking whether to continue with another simulation until a valid response is provided
     while run_simulation_response is False:
-        run_simulation = input("Would you like to run another simulation? Y/N: ")
-        if run_simulation.lower().strip() in positive_response:
+        run_simulation = input("Would you like to run another simulation? Y/N: ").strip().title()
+        if run_simulation in positive_response:
             run_simulation = True
             valid_response = False
             run_simulation_response = True
-        elif run_simulation.lower().strip() in negative_response:
+        elif run_simulation in negative_response:
             run_simulation = False
             run_simulation_response = True
         else:

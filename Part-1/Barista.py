@@ -25,18 +25,7 @@ class Barista:
         self.hrs_worked = 0
 
     def set_name(self, name:str):
-        """
-        Takes name as input and assigns it to the name attribute.
-
-        Parameters
-        ----------
-        name : str
-            name of barista
-
-        Returns
-        -------
-        None
-        """
+        """Takes name as input and assigns it to the name attribute."""
         self.name = name
 
     def get_name(self):
@@ -44,19 +33,7 @@ class Barista:
         return self.name
 
     def set_speciality(self, speciality:str):
-        """
-        Takes speciality as input and assigns it to the speciality attribute.
-
-        Parameters
-        ----------
-        speciality : str
-            type of coffee that barista has the speciality in making, as such
-            it only takes half the required time prepare the speciality coffee
-
-        Returns
-        -------
-        None
-        """
+        """Takes speciality as input and assigns it to the speciality attribute."""
         self.speciality = speciality
 
     def get_speciality(self):
@@ -76,18 +53,7 @@ class Barista:
         return self.hrs_worked
 
     def increase_hrs_worked(self, hrs):
-        """
-        Increases number of hours a barista has worked for.
-
-        Parameters
-        ----------
-        hrs : float
-            hours worked by a barista
-
-        Returns
-        -------
-        None
-        """
+        """Increases number of hours a barista has worked for."""
         self.hrs_worked += hrs
 
     def reset_hrs_worked(self):
