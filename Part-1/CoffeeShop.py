@@ -2,7 +2,7 @@ from Ingredient import Ingredient
 from Supplier import Supplier
 from Barista import Barista
 from CoffeeType import CoffeeType
-from fractions import Fraction
+from fractions import Fraction # used to avoid rounding errors
 
 class CoffeeShop:
     """
@@ -62,7 +62,41 @@ class CoffeeShop:
         """Prints out the header at the beginning of each month."""
         print("==========================================================================")
         print(f"=========================== SIMULATING MONTH {self.simulation_month} ===========================")
-        print("==========================================================================")    
+        print("==========================================================================")
+
+    def maximise_income(self):
+        """Uses bubble sort to sort coffeetypes dictionary based on largest price per unit time of barista
+        to maximize income."""
+        valid_response = False # boolean used to check if valid response is given
+        valid_answers = ["Y","Yes","N","No"]
+        # loops until a valid response is given
+        while valid_response is False:
+            maximise_income = input("Would you like to maximise income? Y/N: ").strip().title()
+            if maximise_income in valid_answers:
+                valid_response = True
+            else:
+                print("Please enter a valid response!")
+        # if positive answer, the uses bubble sort to rearrange coffee types dictionary based on the largest 
+        # to smallest price per unit time pf barista, this 
+        if maximise_income=="Y" or maximise_income=="Yes":
+            list_of_coffeetypes = list(self.coffeetypes.values())
+            n = len(list_of_coffeetypes)
+            for i in range(n):
+                swapped = False
+                for j in range(0, n-i-1):
+                    j_0 = list_of_coffeetypes[j].get_sell_price()/list_of_coffeetypes[j].get_prep_time()
+                    j_1 = list_of_coffeetypes[j+1].get_sell_price()/list_of_coffeetypes[j+1].get_prep_time()
+                    if j_0 < j_1:
+                        list_of_coffeetypes[j], list_of_coffeetypes[j+1] = list_of_coffeetypes[j+1], list_of_coffeetypes[j]
+                        swapped = True
+                if swapped is False:
+                    break
+            sorted_coffeetype_dict = {}
+            # creates a new dictionary with sorted values/objects
+            for coffee in list_of_coffeetypes:
+                sorted_coffeetype_dict.update({coffee.get_name():coffee})
+            # reassigns the old the dictionary with the new one
+            self.coffeetypes = sorted_coffeetype_dict
 
     def select_barista(self):
         """Prompts user to add/remove baristas and add each barista's speciality in coffee-making."""
@@ -108,16 +142,20 @@ class CoffeeShop:
                                         loop_bool = True
                                     else:
                                         print("Please enter a valid response!")
+                                # if positive response then prompts user to enter the type of coffee
                                 if speciality_exists.lower()=="y" or speciality_exists.lower()=="yes":
                                     speciality = input("Please enter the type of coffee: ").strip().title()
                                     if speciality in list(self.coffeetypes.keys()):
-                                        barista.set_speciality(speciality)
+                                        barista.set_speciality(speciality) # assigns to speciality within barista object
+                                        # assigns barista name within coffee type
                                         self.coffeetypes[speciality].set_speciality_staff(barista.get_name())
+                                        # assigns barista name to the list of speciality staff only 
                                         self.all_speciality_staff_name.append(barista.get_name())
                                         speciality_valid_response = True
                                     else:
                                         print("Please enter a valid type of coffee! (Note: response is case sensitve)")
                                 else:
+                                    # assignes barista name to the list of normal staff
                                     self.all_normal_staff_name.append(barista.get_name())
                                     speciality_valid_response = True
                             print(f"Added {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_month}")
@@ -125,11 +163,15 @@ class CoffeeShop:
                 except ValueError:
                     print("Please enter a positive integer!")
         else:
+            # if there are already barista, as with the case with month 2 onwards, then the option of removing
+            # baristas becomes valid and also to make no change
             while valid_response is False:
                 try:
                     print("To add barista(s) enter a positive integer (e.g. 2), to remove barista(s)")
                     add_or_remove = int(input("enter a negative integer (e.g. -2), no change enter '0': "))
+                    # if decides to add barista
                     if add_or_remove > 0:
+                        # checks if no more than 4 baristas
                         if (add_or_remove + len(self.chosen_baristas)) > 4:
                             print(f"The shop can only take a maximum of 4 baristas at a time, currently there are {len(self.chosen_baristas)}!")
                         else:
@@ -137,6 +179,7 @@ class CoffeeShop:
                                 name_exists = True
                                 speciality_valid_response = False
                                 loop_bool = False
+                                # prompts user to input name
                                 while name_exists is True:
                                     name = input("Please enter a valid barista name: ").strip().title()
                                     if name=="" or not name.isalpha():
@@ -149,6 +192,7 @@ class CoffeeShop:
                                             barista.set_name(name)
                                             self.chosen_baristas.update({name:barista})
                                             name_exists = False
+                                # prompts user if new barista has any speciality in any of the coffee types
                                 while speciality_valid_response is False:
                                     valid_answers = ["yes","y","no","n"]
                                     print(f"Types of coffee served at {self.name}:")
@@ -174,21 +218,28 @@ class CoffeeShop:
                                         speciality_valid_response = True
                                 print(f"Added {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_month}")
                             valid_response = True
+                    # if user decides to remove baristas
                     elif add_or_remove < 0:
+                        # checks if there will be at least one barista
                         if (add_or_remove + len(self.chosen_baristas)) <= 0:
                             print(f"The shop must have at least 1 barista, currently there are {len(self.chosen_baristas)}!")
                         else:
                             for i in range(abs(add_or_remove)):
                                 name_exists = False
+                                # prompts user to name the barista to remove and checks if that exits
                                 while name_exists is False:
                                     name = input("Please enter barista name: ").strip().title()
                                     if name!="":
                                         if name in self.chosen_baristas:
+                                            # if barista has any speciality
                                             if name in self.all_speciality_staff_name:
+                                                # removes name from the respective coffeetype object
                                                 type_coffee = self.chosen_baristas[name].get_speciality()
                                                 self.coffeetypes[type_coffee].remove_speciality_staff(name)
+                                                # removes name from speciality staff name list
                                                 self.all_speciality_staff_name.remove(name)
                                             else:
+                                                # removes name from the normal staff name list
                                                 self.all_normal_staff_name.remove(name)
                                             print(f"Removed {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_month}")
                                             del self.chosen_baristas[name]
@@ -292,23 +343,42 @@ class CoffeeShop:
                                             try:
                                                 self.chosen_baristas[self.all_normal_staff_name[i+1]].increase_hrs_worked(rem)
                                                 print(f"+ {rem} {self.all_normal_staff_name[i+1]}")
+                                                rem = 0
                                                 break
                                             except IndexError:
-                                                for i, name in enumerate(self.all_speciality_staff_name):
-                                                    if self.chosen_baristas[name].get_hrs_worked()!=80:
-                                                        avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
-                                                        if avl >= rem:
-                                                            avl = rem
-                                                            print(f"+{avl} {name}")
-                                                            self.chosen_baristas[name].increase_hrs_worked(avl)
-                                                            break
-                                                        else:
-                                                            rem = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)) - avl
-                                                            self.chosen_baristas[name].increase_hrs_worked(avl)
-                                                            self.chosen_baristas[self.all_speciality_staff_name[i+1]].increase_hrs_worked(rem)
-                                                            print(f"+{avl} {name}")
-                                                            print(f"+ {rem} {self.all_speciality_staff_name[i+1]}")
-                                                            break
+                                                break
+                                if rem >0:
+                                    for i, name in enumerate(self.all_speciality_staff_name):
+                                        if self.chosen_baristas[name].get_hrs_worked()!=80:
+                                            avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
+                                            if avl >= rem:
+                                                avl = rem
+                                                print(f"+{avl} {name}")
+                                                self.chosen_baristas[name].increase_hrs_worked(avl)
+                                                break
+                                            else:
+                                                rem = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)) - avl
+                                                self.chosen_baristas[name].increase_hrs_worked(avl)
+                                                self.chosen_baristas[self.all_speciality_staff_name[i+1]].increase_hrs_worked(rem)
+                                                print(f"+{avl} {name}")
+                                                print(f"+ {rem} {self.all_speciality_staff_name[i+1]}")
+                                                break
+                                else:
+                                    for i, name in enumerate(self.all_speciality_staff_name):
+                                        if self.chosen_baristas[name].get_hrs_worked()!=80:
+                                            avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
+                                            if avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):
+                                                avl = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60))
+                                                print(f"+{avl} {name}")
+                                                self.chosen_baristas[name].increase_hrs_worked(avl)
+                                                break
+                                            else:
+                                                rem = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)) - avl
+                                                self.chosen_baristas[name].increase_hrs_worked(avl)
+                                                self.chosen_baristas[self.all_speciality_staff_name[i+1]].increase_hrs_worked(rem)
+                                                print(f"+{avl} {name}")
+                                                print(f"+ {rem} {self.all_speciality_staff_name[i+1]}")
+                                                break
                             for ingredient in list(self.ingredients.values()):
                                 ingredient.increase_quantity_used(demand,coffee)
                             coffee.increase_sold_quantity(demand)
@@ -321,28 +391,44 @@ class CoffeeShop:
         """Prints out the shop name, cash status, quantity of each ingredient available and hired baristas."""
         print(f"Shop Name: {self.name}, Cash: £{self.current_cash:.2f}")
         print("\t Pantry")
+        # prints out remaining quantity of each ingredient
         for ingredient in list(self.ingredients.values()):
             print(f"\t\t {ingredient.get_name()}, remaining {ingredient.get_leftover_quantity():.2f} (capacity = {ingredient.get_capacity()})")
         print("\t Barista")
+        # prints out baristas and their rates
         for barista in list(self.chosen_baristas.values()):
             print(f"\t\tBarista {barista.get_name()}, hourly rate = £{barista.get_rate_per_hour():.2f}")
 
     def pay_expenses(self):
-        bankrupt = False
+        """Updates cash of coffee shop by paying out expenses; if at any point there is insufficient cash
+        then program halts and an error messages informs which expense could not be satisfied."""
+        bankrupt = False # boolean used to stop the program when cash is insufficient
+        # order of cash updates follows as such:
+        # 1. add income from selling different types of coffee
+        # 2. paying up utilities/rent
+        # 3. paying up baristas salary
+        # 4. paying up pantry costs
+        # 5. paying up supplier to restock the ingredients to full capacity
+
+        # 1. add income from selling different types of coffee
         for coffee in list(self.coffeetypes.values()):
             self.current_cash = coffee.calculate_income(self.current_cash)
+        # 2. paying up utilities/rent
         if (self.current_cash - self.fixed_monthly_rent) < 0:
             print("Insufficient cash to make utilities payment!")
+            # informs user how much is required vs current cash that shop has
             print(f"Require £{self.fixed_monthly_rent:.2f}, but only have £{self.current_cash:.2f}!")
             bankrupt = True
             return bankrupt
         else:
             self.current_cash -= self.fixed_monthly_rent
             print(f"Paid rent/utilities £{self.fixed_monthly_rent:.2f}")
+            # 3. paying up baristas salary
             for barista in list(self.chosen_baristas.values()):
                 if barista.get_paid(self.current_cash)<0:
                     temp_value = self.current_cash - barista.get_paid(self.current_cash)
                     print(f"BANKRUPT: Insufficient cash to pay {barista.get_name()}!")
+                    # informs user how much is required vs current cash that shop has
                     print(f"Require £{(temp_value):.2f}, but only have £{self.current_cash:.2f}!")
                     bankrupt = True
                     break
@@ -353,10 +439,12 @@ class CoffeeShop:
             if bankrupt is True:
                 return bankrupt
             else:
+                # 4. paying up pantry costs
                 for ingredient in list(self.ingredients.values()):
                     if ingredient.calculate_pantry_cost(self.current_cash)<0:
                         temp_value = self.current_cash - ingredient.calculate_pantry_cost(self.current_cash)
                         print(f"BANKRUPT: Insufficient cash to pay pantry costs for {ingredient.get_name()}!")
+                        # informs user how much is required vs current cash that shop has
                         print(f"Require £{(temp_value):.2f}, but only have £{self.current_cash:.2f}!")
                         bankrupt = True
                         break
@@ -368,6 +456,7 @@ class CoffeeShop:
                 else:
                     CoffeeShop.status(self)
                     valid_response = False
+                    # 5. paying up supplier to restock the ingredients to full capacity
                     while valid_response is False:
                         print("Supplier list: ")
                         print(*(list(self.suppliers.keys())), sep = ", ") 
@@ -380,6 +469,7 @@ class CoffeeShop:
                         if ingredient.order_from_supplier(self.suppliers[supplier_choose], self.current_cash) < 0:
                             temp_value = self.current_cash - ingredient.order_from_supplier(supplier_choose, self.current_cash)
                             print (f"BANKRUPT: Insufficient cash to restock {ingredient.get_name()}!")
+                            # informs user how much is required vs current cash that shop has
                             print (f"Require £{(temp_value):.2f}, but only have £{self.current_cash:.2f}!")
                             bankrupt = True
                         else:
@@ -387,6 +477,7 @@ class CoffeeShop:
                             ingredient.reset_quantity_used()
                     if bankrupt is True:
                         return bankrupt
+                    # Prints final message
                     else:
                         print("All expenses have been paid!")
                         print("All ingredients have been fully restocked.")
