@@ -255,37 +255,33 @@ class CoffeeShop:
 
     def attend_coffee_demand(self):
         """Asks users to enter the quantity of each coffee type checks if demand can be achieved."""
-
+        # loops through each coffee
         for coffee in list(self.coffeetypes.values()):
-
             # boolean used to check if demand values are valid
             valid_response = False 
             # boolean used to check if demand entered can be met with available baristas & ingredient quantities
             sufficient_supply = False 
-
             # loop ends when response is valid and demand can be met by available supply of baristas and ingredients
             while valid_response is False or sufficient_supply is False:
-
                 try:
-
                     demand = int(input(f"Coffee {coffee.get_name()}, demand {coffee.get_mon_dem()}, how much to sell: "))
-
                     if demand > coffee.get_mon_dem():
-
                         # if input value is greater than requested demand, error message is printed
                         print(f"Please enter a value less than or equal to {coffee.get_mon_dem()}")
-
                     elif demand >=0:
-
                         # checks supplies by calling on check_supply method from CoffeeType class
                         sufficient_supply = coffee.check_supply(demand, self.chosen_baristas, self.ingredients)
                         valid_response = True
-                        rem = 0
+                        rem = 0  # remainder variable used when the total time to prepare the demanded coffee is
+                        # split between two or more baristas
                         # if supplies are sufficient, only then baristas hrs are increased
                         if sufficient_supply is True:
                             list_of_baristas = list(self.chosen_baristas.values())
+                            # fetches list of speciality staff saved in the coffeetype class
                             speciality_staff = coffee.get_speciality_staff_list()
+                            # checks if there are any speciality staff
                             if len(speciality_staff)>0:
+                                # if there are speciality staff then it loops through the list
                                 for i, name in enumerate(speciality_staff):
                                     if self.chosen_baristas[name].get_hrs_worked()!=80:
                                         avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
@@ -302,12 +298,14 @@ class CoffeeShop:
                                             self.chosen_baristas[name].increase_hrs_worked(avl)
                                             print(f"+ {avl} {name}")
                                             try:
+                                                # if there is a barista next in line with the same speciality
                                                 self.chosen_baristas[speciality_staff[i+1]].increase_hrs_worked(rem)
                                                 print(f"+ {rem} {speciality_staff[i+1]}")
                                                 rem = 0
                                                 break
                                             except IndexError:
                                                 break
+                                # if there isn't a speciality staff in line, it assign time to any other barista 
                                 if rem > 0:
                                     outstanding = rem
                                     for i, barista in enumerate(list_of_baristas):
@@ -327,10 +325,15 @@ class CoffeeShop:
                                                 print(f"+ {avl} {barista.get_name()}")
                                                 print(f"+ {rem} {list_of_baristas[i+1].get_name()}")
                                                 break
+                            # if there are no speciality staff at all
                             else:
+                                # loops through the normal staff list
                                 for i, name in enumerate(self.all_normal_staff_name):
                                     if self.chosen_baristas[name].get_hrs_worked()!=80:
                                         avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
+                                        # if available (avl) hrs for each barista is greater than hrs demand for serving
+                                        # type of coffee then all the hrs are assigned to one barista, else the remainder (rem)
+                                        # number of hrs is assigned to the next barista in line
                                         if avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):
                                             hrs = (Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)
                                             self.chosen_baristas[name].increase_hrs_worked(hrs)
@@ -381,6 +384,7 @@ class CoffeeShop:
                                                 break
                             for ingredient in list(self.ingredients.values()):
                                 ingredient.increase_quantity_used(demand,coffee)
+                            # updates the quantity sold within the coffeetype class
                             coffee.increase_sold_quantity(demand)
                     else:
                         print("Please enter an integer greater than or equal to 0!")
