@@ -37,6 +37,8 @@ while run_simulation is True:
 
     # initiating object
     Coffeeshop = CoffeeShop(shop_name)
+    # option to maximise income
+    Coffeeshop.maximise_income()
 
     # simulating months with CoffeeShop methods
     for month in range(no_of_simulation_months):
@@ -56,7 +58,7 @@ while run_simulation is True:
             print(f"Went bankrupt in month {month}")
             print("")
             break
-    
+
     run_simulation_response = False # boolean value to check if valid response is given to continue with another simulation
     positive_response = ["Y","Yes"]
     negative_response = ["N","No"]
