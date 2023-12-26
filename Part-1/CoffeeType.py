@@ -1,5 +1,5 @@
-import math
-from fractions import Fraction
+import math # used to round down capacity values
+from fractions import Fraction # used to avoid rounding errors
 
 class CoffeeType:
     """
@@ -78,14 +78,17 @@ class CoffeeType:
 
     def reset_sold_quantity(self):
         """Resets the quantity of coffee sold to 0."""
-        CoffeeType.sold = 0
+        self.sold = 0
 
     def check_supply(self, demand:int, baristas_dict:dict, ingredients:dict):
         """
-        Calculates money earned by selling a type of coffee and adds it to the shop's cash.
+        Checks if there is enough barista hours and quantity of ingredients available to
+        meet the requested demand.
 
         Parameters
         ----------
+        demand : int
+            quantity of a particular coffee type requested
         baristas_dict : dict
             dictionary of baristas as described by Barista class
         ingredients : dict
@@ -102,22 +105,29 @@ class CoffeeType:
         total_time_available = 0 # total time available from all baristas
         time_from_specialist = 0 # time available from specialist baristas
 
-        # iterating through 
+        # iterating through list of baristas to cumulate total time available (in hrs) and also separately
+        # cumulate time available from specialist barista for the given coffee type
         for barista in list(baristas_dict.values()):
             total_time_available += Fraction(80) - Fraction(barista.get_hrs_worked())
             if barista.get_speciality()==self.name:
                 time_from_specialist += Fraction(80) - Fraction(barista.get_hrs_worked())
-    
+
+        # given the time available, for both specialist and non specialist baristas, the below calculates
+        # the total capacity of barista given if ingredients were not the limiting factor
         capacity_normal_staff = (Fraction(total_time_available)-Fraction(time_from_specialist))/(Fraction(self.prep_time)/Fraction(60))
         capacity_specialist = Fraction(time_from_specialist)/(Fraction(self.prep_time)/Fraction(120))
         barista_capacity = math.floor(capacity_normal_staff+capacity_specialist)
 
+        # iterating through the ingredients dictionary to check if the each ingredient as sufficient supply
+        # to meet the requested demand
         for ingredient in list(ingredients.values()):
             if ingredient.get_name() == "Milk":
                 req = demand*self.milk_reqd
                 if req!=0:
                     avl = ingredient.get_capacity() - ingredient.get_quantity_used()
                     ingredient_capacity.append(math.floor(avl/self.milk_reqd))
+                    # if the available (avl) quantity is less than the requested (req) then an warning message
+                    # is logged
                     if avl < req:
                         messages.append(f"Milk need {req:.1f}L, pantry contains only {avl:.1f}L")
                 else:
@@ -141,6 +151,12 @@ class CoffeeType:
                 else:
                     pass
         
+        # the below provide 4 possibilities:
+        # 1. barista capacity is the limiting factor (i.e. not enough barista hrs to fulfil demand)
+        # 2. one or more ingredients are the limiting factor
+        # 3. both barista and ingredients supplies are less than demand, however the dictating limiting
+        # #  factor is found and then the appropriate error message is displayed
+        # 4. all supplies are sufficient
         if ((barista_capacity < demand) and not messages):
             sufficient_supply = False
             print(f"Insufficient labour: quantity requested {demand}, capacity {barista_capacity}")
@@ -155,6 +171,8 @@ class CoffeeType:
             return sufficient_supply
         elif (barista_capacity < demand) and len(messages)>0:
             sufficient_supply = False
+            # checks which of the two, barista or ingredient, has the least capacity as such is the
+            # limiting factor
             if barista_capacity <= min(ingredient_capacity):
                 print(f"Insufficient labour: quantity requested {demand}, capacity {barista_capacity}")
             else:
