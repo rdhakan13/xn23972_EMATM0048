@@ -64,39 +64,28 @@ class CoffeeShop:
         print(f"=========================== SIMULATING MONTH {self.simulation_month} ===========================")
         print("==========================================================================")
 
+    # PROGRAM EXTENSION
     def maximise_income(self):
         """Uses bubble sort to sort coffeetypes dictionary based on largest price per unit time of barista
-        to maximize income."""
-        valid_response = False # boolean used to check if valid response is given
-        valid_answers = ["Y","Yes","N","No"]
-        # loops until a valid response is given
-        while valid_response is False:
-            maximise_income = input("Would you like to maximise income? Y/N: ").strip().title()
-            if maximise_income in valid_answers:
-                valid_response = True
-            else:
-                print("Please enter a valid response!")
-        # if positive answer, the uses bubble sort to rearrange coffee types dictionary based on the largest 
-        # to smallest price per unit time pf barista, this 
-        if maximise_income=="Y" or maximise_income=="Yes":
-            list_of_coffeetypes = list(self.coffeetypes.values())
-            n = len(list_of_coffeetypes)
-            for i in range(n):
-                swapped = False
-                for j in range(0, n-i-1):
-                    j_0 = list_of_coffeetypes[j].get_sell_price()/list_of_coffeetypes[j].get_prep_time()
-                    j_1 = list_of_coffeetypes[j+1].get_sell_price()/list_of_coffeetypes[j+1].get_prep_time()
-                    if j_0 < j_1:
-                        list_of_coffeetypes[j], list_of_coffeetypes[j+1] = list_of_coffeetypes[j+1], list_of_coffeetypes[j]
-                        swapped = True
-                if swapped is False:
-                    break
-            sorted_coffeetype_dict = {}
-            # creates a new dictionary with sorted values/objects
-            for coffee in list_of_coffeetypes:
-                sorted_coffeetype_dict.update({coffee.get_name():coffee})
-            # reassigns the old the dictionary with the new one
-            self.coffeetypes = sorted_coffeetype_dict
+        so that coffee demand is attended accordingly to maximize income."""
+        list_of_coffeetypes = list(self.coffeetypes.values())
+        n = len(list_of_coffeetypes)
+        for i in range(n):
+            swapped = False
+            for j in range(0, n-i-1):
+                j_0 = list_of_coffeetypes[j].get_sell_price()/list_of_coffeetypes[j].get_prep_time()
+                j_1 = list_of_coffeetypes[j+1].get_sell_price()/list_of_coffeetypes[j+1].get_prep_time()
+                if j_0 < j_1:
+                    list_of_coffeetypes[j], list_of_coffeetypes[j+1] = list_of_coffeetypes[j+1], list_of_coffeetypes[j]
+                    swapped = True
+            if swapped is False:
+                break
+        sorted_coffeetype_dict = {}
+        # creates a new dictionary with sorted values/objects
+        for coffee in list_of_coffeetypes:
+            sorted_coffeetype_dict.update({coffee.get_name():coffee})
+        # reassigns the old the dictionary with the new one
+        self.coffeetypes = sorted_coffeetype_dict
 
     def select_barista(self):
         """Prompts user to add/remove baristas and add each barista's speciality in coffee-making."""
@@ -440,6 +429,7 @@ class CoffeeShop:
             self.current_cash -= self.fixed_monthly_rent
             print(f"Paid rent/utilities £{self.fixed_monthly_rent:.2f}")
             # 3. paying up baristas salary
+            # looping through all baristas to pay them up
             for barista in list(self.chosen_baristas.values()):
                 if barista.get_paid(self.current_cash)<0:
                     temp_value = self.current_cash - barista.get_paid(self.current_cash)
@@ -456,6 +446,7 @@ class CoffeeShop:
                 return bankrupt
             else:
                 # 4. paying up pantry costs
+                # looping through each ingredient to pay up pantry cost
                 for ingredient in list(self.ingredients.values()):
                     if ingredient.calculate_pantry_cost(self.current_cash)<0:
                         temp_value = self.current_cash - ingredient.calculate_pantry_cost(self.current_cash)
@@ -471,8 +462,9 @@ class CoffeeShop:
                     return bankrupt
                 else:
                     CoffeeShop.status(self)
-                    valid_response = False
+                    valid_response = False # boolean value used to acquire a valid response
                     # 5. paying up supplier to restock the ingredients to full capacity
+                    # selecting supplier
                     while valid_response is False:
                         print("Supplier list: ")
                         print(*(list(self.suppliers.keys())), sep = ", ") 
@@ -481,6 +473,7 @@ class CoffeeShop:
                             valid_response = True
                         else:
                             print("Supplier does not exist! (Note: response is case sensitve)")
+                    # looping through each ingredient to get the updated value of cash and reset its quantity
                     for ingredient in list(self.ingredients.values()):
                         if ingredient.order_from_supplier(self.suppliers[supplier_choose], self.current_cash) < 0:
                             temp_value = self.current_cash - ingredient.order_from_supplier(supplier_choose, self.current_cash)
