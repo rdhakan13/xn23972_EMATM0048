@@ -281,14 +281,25 @@ class CoffeeShop:
                             speciality_staff = coffee.get_speciality_staff_list()
                             # checks if there are any speciality staff
                             if len(speciality_staff)>0:
-                                # if there are speciality staff then it loops through the list
+                                # if there are speciality staff dedicated to the type of coffee in the LOOP 
+                                # then it loops through the list
                                 for i, name in enumerate(speciality_staff):
                                     if self.chosen_baristas[name].get_hrs_worked()!=80:
                                         avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
                                         # if available (avl) hrs for each barista is greater than hrs demand for serving
                                         # type of coffee then all the hrs are assigned to one barista, else the remainder (rem)
                                         # number of hrs is assigned to the next barista in line
-                                        if avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(120)):
+                                        if rem >0:
+                                            if rem > avl:
+                                                rem = rem - avl
+                                                self.chosen_baristas[name].increase_hrs_worked(avl)
+                                                print(f"+ {avl} {name}")
+                                            else:
+                                                self.chosen_baristas[name].increase_hrs_worked(rem)
+                                                print(f"+ {rem} {name}")
+                                                rem = 0
+                                                break
+                                        elif avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(120)):
                                             hrs = (Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(120)
                                             self.chosen_baristas[name].increase_hrs_worked(hrs)
                                             print(f"+ {hrs} {name}")
@@ -297,44 +308,38 @@ class CoffeeShop:
                                             rem = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(120)) - avl
                                             self.chosen_baristas[name].increase_hrs_worked(avl)
                                             print(f"+ {avl} {name}")
-                                            try:
-                                                # if there is a barista next in line with the same speciality
-                                                self.chosen_baristas[speciality_staff[i+1]].increase_hrs_worked(rem)
-                                                print(f"+ {rem} {speciality_staff[i+1]}")
-                                                rem = 0
-                                                break
-                                            except IndexError:
-                                                break
-                                # if there isn't a speciality staff in line, it assign time to any other barista 
+                                # if there isn't a speciality staff in line, it assigns time to any other barista
                                 if rem > 0:
-                                    outstanding = rem
                                     for i, barista in enumerate(list_of_baristas):
                                         if barista.get_hrs_worked()!=80:
                                             avl = Fraction(80) - Fraction(barista.get_hrs_worked())
-                                            # if available (avl) hrs for each barista is greater than hrs demand for serving
-                                            # type of coffee then all the hrs are assigned to one barista, else the remainder (rem)
-                                            # number of hrs is assigned to the next barista in line
-                                            if avl >= outstanding:
-                                                barista.increase_hrs_worked(outstanding)
-                                                print(f"+{hrs} {barista.get_name()}")
-                                                break
-                                            else:
-                                                rem = outstanding - avl
-                                                barista.increase_hrs_worked(avl)
-                                                list_of_baristas[i+1].increase_hrs_worked(rem)
-                                                print(f"+ {avl} {barista.get_name()}")
-                                                print(f"+ {rem} {list_of_baristas[i+1].get_name()}")
-                                                break
+                                            if rem > 0:
+                                                if rem > avl:
+                                                    rem = rem - avl
+                                                    barista.increase_hrs_worked(avl)
+                                                    print(f"+{avl} {barista.get_name()}")
+                                                else:
+                                                    barista.increase_hrs_worked(rem)
+                                                    print(f"+{rem} {barista.get_name()}")
+                                                    rem = 0
+                                                    break
                             # if there are no speciality staff at all
                             else:
-                                # loops through the normal staff list
+                                # loops through the normal staff list first
                                 for i, name in enumerate(self.all_normal_staff_name):
                                     if self.chosen_baristas[name].get_hrs_worked()!=80:
                                         avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
-                                        # if available (avl) hrs for each barista is greater than hrs demand for serving
-                                        # type of coffee then all the hrs are assigned to one barista, else the remainder (rem)
-                                        # number of hrs is assigned to the next barista in line
-                                        if avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):
+                                        if rem > 0:
+                                            if rem > avl:
+                                                rem = rem - avl
+                                                self.chosen_baristas[name].increase_hrs_worked(avl)
+                                                print(f"+{avl} {name}")
+                                            else:
+                                                self.chosen_baristas[name].increase_hrs_worked(rem)
+                                                print(f"+{rem} {name}")
+                                                rem = 0
+                                                break
+                                        elif avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):
                                             hrs = (Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)
                                             self.chosen_baristas[name].increase_hrs_worked(hrs)
                                             print(f"+{hrs} {name}")
@@ -343,34 +348,41 @@ class CoffeeShop:
                                             rem = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)) - avl
                                             self.chosen_baristas[name].increase_hrs_worked(avl)
                                             print(f"+{avl} {name}")
-                                            try:
-                                                self.chosen_baristas[self.all_normal_staff_name[i+1]].increase_hrs_worked(rem)
-                                                print(f"+ {rem} {self.all_normal_staff_name[i+1]}")
-                                                rem = 0
-                                                break
-                                            except IndexError:
-                                                break
+                                # if there isn't a barista that is normal, then it loops through all speciality staff
+                                # which is not for coffee type in the LOOP (i.e. if a barista specialising in latte is
+                                # can be assigned time to fulfill demand for filter coffee)
                                 if rem >0:
                                     for i, name in enumerate(self.all_speciality_staff_name):
                                         if self.chosen_baristas[name].get_hrs_worked()!=80:
                                             avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
-                                            if avl >= rem:
-                                                avl = rem
-                                                print(f"+{avl} {name}")
-                                                self.chosen_baristas[name].increase_hrs_worked(avl)
-                                                break
-                                            else:
-                                                rem = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)) - avl
-                                                self.chosen_baristas[name].increase_hrs_worked(avl)
-                                                self.chosen_baristas[self.all_speciality_staff_name[i+1]].increase_hrs_worked(rem)
-                                                print(f"+{avl} {name}")
-                                                print(f"+ {rem} {self.all_speciality_staff_name[i+1]}")
-                                                break
-                                else:
+                                            # the remainder from the previous loop is now distributed amongst
+                                            if rem > 0:
+                                                if rem > avl:
+                                                    rem = rem - avl
+                                                    self.chosen_baristas[name].increase_hrs_worked(avl)
+                                                    print(f"+{avl} {name}")
+                                                else:
+                                                    self.chosen_baristas[name].increase_hrs_worked(rem)
+                                                    print(f"+{rem} {name}")
+                                                    rem = 0
+                                                    break
+                                # if remainder (rem) is zero then it suggests that there no normal baristas, or baristas
+                                # with coffee making speciality to the coffeetype currently in LOOP, therefore it loops direct
+                                if len(self.all_normal_staff_name)==0:
                                     for i, name in enumerate(self.all_speciality_staff_name):
                                         if self.chosen_baristas[name].get_hrs_worked()!=80:
                                             avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
-                                            if avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):
+                                            if rem > 0:
+                                                if rem > avl:
+                                                    rem = rem - avl
+                                                    self.chosen_baristas[name].increase_hrs_worked(avl)
+                                                    print(f"+{avl} {name}")
+                                                else:
+                                                    self.chosen_baristas[name].increase_hrs_worked(rem)
+                                                    print(f"+{rem} {name}")
+                                                    rem = 0
+                                                    break
+                                            elif avl >= ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60)):
                                                 avl = ((Fraction(demand)*Fraction(coffee.get_prep_time()))/Fraction(60))
                                                 print(f"+{avl} {name}")
                                                 self.chosen_baristas[name].increase_hrs_worked(avl)
