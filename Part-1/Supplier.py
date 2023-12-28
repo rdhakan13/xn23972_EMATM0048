@@ -21,18 +21,14 @@ class Supplier:
         self.beans_rate = beans_rate
         self.spices_rate = spices_rate
 
-    def get_name(self):
-        """Returns supplier's name."""
-        return self.name
-
-    def get_milk_rate(self):
+    def getMilkRate(self):
         """Returns suppliers milk rate."""
         return self.milk_rate
 
-    def get_beans_rate(self):
+    def getBeansRate(self):
         """Returns suppliers beans rate."""
         return self.beans_rate
 
-    def get_spices_rate(self):
+    def getSpicesRate(self):
         """Returns suppliers spices rate."""
         return self.spices_rate

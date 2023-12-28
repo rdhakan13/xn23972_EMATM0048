@@ -40,47 +40,59 @@ class CoffeeType:
         self.sold = 0
         self.speciality_staff = []
 
-    def get_name(self):
+    def getName(self):
         """Returns the name of coffee type."""
         return self.name
 
-    def get_milk_reqd(self):
+    def getMilkReqd(self):
         """Returns the quantity of milk required (in litres)."""
         return self.milk_reqd
 
-    def get_beans_reqd(self):
+    def getBeansReqd(self):
         """Returns the quantity of beans required (in grams)."""
         return self.beans_reqd
 
-    def get_spices_reqd(self):
+    def getSpicesReqd(self):
         """Returns the quantity of spices required (in grams)."""
         return self.spices_reqd
 
-    def get_prep_time(self):
+    def getPrepTime(self):
         """Returns the time taken to prepare 1 coffee (in minutes)."""
         return self.prep_time
 
-    def get_mon_dem(self):
+    def getMonDem(self):
         """Returns the quantity of coffee demanded in a month."""
         return self.mon_dem
 
-    def get_sell_price(self):
+    def getSellPrice(self):
         """Returns the unit price of a coffee."""
         return self.sell_price
 
-    def get_quantity_sold(self):
+    def getQuantitySold(self):
         """Returns the quantity of coffee sold in a month."""
         return self.sold
 
-    def increase_sold_quantity(self, demand:int):
+    def increaseSoldQuantity(self, demand:int):
         """Increases the quantity of coffee sold in a month."""
         self.sold = demand
 
-    def reset_sold_quantity(self):
+    def resetSoldQuantity(self):
         """Resets the quantity of coffee sold to 0."""
         self.sold = 0
 
-    def check_supply(self, demand:int, baristas_dict:dict, ingredients:dict):
+    def setSpecialityStaff(self, name:str):
+        """Assigns name to speciality staff list."""
+        self.speciality_staff.append(name)
+
+    def getSpecialityStaffList(self):
+        """Returns speciality staff list."""
+        return self.speciality_staff
+
+    def removeSpecialityStaff(self, name:str):
+        """Removes the given name of staff from speciality staff list."""
+        self.speciality_staff.remove(name)
+
+    def checkSupply(self, demand:int, baristas_dict:dict, ingredients:dict):
         """
         Checks if there is enough barista hours and quantity of ingredients available to
         meet the requested demand.
@@ -108,9 +120,9 @@ class CoffeeType:
         # iterating through list of baristas to cumulate total time available (in hrs) and also separately
         # cumulate time available from specialist barista for the given coffee type
         for barista in list(baristas_dict.values()):
-            total_time_available += Fraction(80) - Fraction(barista.get_hrs_worked())
-            if barista.get_speciality()==self.name:
-                time_from_specialist += Fraction(80) - Fraction(barista.get_hrs_worked())
+            total_time_available += Fraction(80) - Fraction(barista.getHrsWorked())
+            if barista.getSpeciality()==self.name:
+                time_from_specialist += Fraction(80) - Fraction(barista.getHrsWorked())
 
         # given the time available, for both specialist and non specialist baristas, the below calculates
         # the total capacity of barista given if ingredients were not the limiting factor
@@ -121,10 +133,10 @@ class CoffeeType:
         # iterating through the ingredients dictionary to check if the each ingredient as sufficient supply
         # to meet the requested demand
         for ingredient in list(ingredients.values()):
-            if ingredient.get_name() == "Milk":
+            if ingredient.getName() == "Milk":
                 req = demand*self.milk_reqd
                 if req!=0:
-                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
+                    avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
                     ingredient_capacity.append(math.floor(avl/self.milk_reqd))
                     # if the available (avl) quantity is less than the requested (req) then an warning message
                     # is logged
@@ -132,10 +144,10 @@ class CoffeeType:
                         messages.append(f"Milk need {req:.1f}L, pantry contains only {avl:.1f}L")
                 else:
                     pass
-            elif ingredient.get_name() == "Beans":
+            elif ingredient.getName() == "Beans":
                 req = demand*self.beans_reqd
                 if req!=0:
-                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
+                    avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
                     ingredient_capacity.append(math.floor(avl/self.beans_reqd))
                     if avl < req:
                         messages.append(f"Beans need {req:.1f}g, pantry contains only {avl:.1f}g")
@@ -144,7 +156,7 @@ class CoffeeType:
             else:
                 req = demand*self.spices_reqd
                 if req!=0:
-                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
+                    avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
                     ingredient_capacity.append(math.floor(avl/self.spices_reqd))
                     if avl < req:
                         messages.append(f"Spices need {req:.1f}g, pantry contains only {avl:.1f}g")
@@ -184,34 +196,4 @@ class CoffeeType:
             return sufficient_supply
         else:
             return sufficient_supply
-
-    def set_speciality_staff(self, name:str):
-        """Assigns name to speciality staff list."""
-        self.speciality_staff.append(name)
-
-    def get_speciality_staff_list(self):
-        """Returns speciality staff list."""
-        return self.speciality_staff
-
-    def remove_speciality_staff(self, name:str):
-        """Removes the given name of staff from speciality staff list."""
-        self.speciality_staff.remove(name)
-
-    def calculate_income(self, current_cash:float):
-        """
-        Calculates money earned by selling a type of coffee and adds it to the shop's cash.
-
-        Parameters
-        ----------
-        current_cash : float
-            current amount of cash (£) held by the shop
-
-        Returns
-        -------
-        Updated value of the shop's cash after adding the income from selling a type of coffee.
-        """
-        coffee_income = self.sold*self.sell_price
-        current_cash += coffee_income
-        self.sold = 0
-        return current_cash
     

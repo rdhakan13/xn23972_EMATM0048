@@ -14,7 +14,7 @@ class Barista:
     rate_per_hour : float
         £ per hour a barista earns
     hrs_worked : float
-        number of hours a barista works for (maximum is 80hrs)
+        number of hours a barista works for (maximum a barista can work for is 80hrs)
     """
     def __init__(self):
         """Constructs all the necessary attributes for the barista object."""
@@ -24,55 +24,38 @@ class Barista:
         self.rate_per_hour = 15
         self.hrs_worked = 0
 
-    def set_name(self, name:str):
+    def setName(self, name:str):
         """Takes name as input and assigns it to the name attribute."""
         self.name = name
 
-    def get_name(self):
+    def getName(self):
         """Returns barista's name."""
         return self.name
 
-    def set_speciality(self, speciality:str):
+    def setSpeciality(self, speciality:str):
         """Takes speciality as input and assigns it to the speciality attribute."""
         self.speciality = speciality
 
-    def get_speciality(self):
+    def getSpeciality(self):
         """Returns the speciality coffee."""
         return self.speciality
 
-    def get_hrs_paid(self):
+    def getHrsPaid(self):
         """Returns the number of hours a barista gets paid for."""
         return self.hrs_paid
 
-    def get_rate_per_hour(self):
+    def getRatePerHour(self):
         """Returns £ per hour charge of a barista."""
         return self.rate_per_hour
 
-    def get_hrs_worked(self):
+    def getHrsWorked(self):
         """Returns the number of hours a barista has worked for."""
         return self.hrs_worked
 
-    def increase_hrs_worked(self, hrs):
+    def increaseHrsWorked(self, hrs):
         """Increases number of hours a barista has worked for."""
         self.hrs_worked += hrs
 
-    def reset_hrs_worked(self):
+    def resetHrsWorked(self):
         """Resets the number of hours a barista has worked for to 0."""
         self.hrs_worked = 0
-
-    def get_paid(self, current_cash:float):
-        """
-        Calculates the barista's wage and takes wage out from the shop's cash.
-
-        Parameters
-        ----------
-        current_cash : float
-            current amount of cash (£) held by the shop
-
-        Returns
-        -------
-        Updated value of the shop's cash after taking the wage out
-        """
-        salary = self.rate_per_hour*self.hrs_paid
-        current_cash -= salary
-        return current_cash

@@ -29,30 +29,25 @@ class Ingredient:
         self.deprec = deprec
         self.pantry_cost_rate = pantry_cost_rate
         self.leftover = 0
-        self.pantry_cost = 0
         self.quantity_used = 0
 
-    def get_name(self):
+    def getName(self):
         """Returns ingredient's name."""
         return self.name
 
-    def get_capacity(self):
+    def getCapacity(self):
         """Returns ingredient's maximum quantity."""
         return self.capacity
 
-    def get_deprec(self):
-        """Returns ingredient's depreciation per month on the leftover quantity."""
-        return self.deprec
-
-    def get_pantry_cost_rate(self):
+    def getPantryCostRate(self):
         """Returns ingredient's pantry cost rate."""
         return self.pantry_cost_rate
 
-    def get_quantity_used(self):
+    def getQuantityUsed(self):
         """Returns amount of ingredient used up."""
         return self.quantity_used
 
-    def increase_quantity_used(self, demand:int, coffeetype):
+    def increaseQuantityUsed(self, demand:int, coffeetype):
         """
         Calculates the updated quantity used by the ingredient based on serving the demand.
 
@@ -68,68 +63,44 @@ class Ingredient:
         None
         """
         if self.name == "Milk":
-            self.quantity_used += (demand*coffeetype.get_milk_reqd())
+            self.quantity_used += (demand*coffeetype.getMilkReqd())
         elif self.name == "Beans":
-            self.quantity_used += (demand*coffeetype.get_beans_reqd())
+            self.quantity_used += (demand*coffeetype.getBeansReqd())
         else:
-            self.quantity_used += (demand*coffeetype.get_spices_reqd())
+            self.quantity_used += (demand*coffeetype.getSpicesReqd())
 
-    def reset_quantity_used(self):
+    def resetQuantityUsed(self):
         """Resets ingredient's quantity used to 0."""
         self.quantity_used = 0
 
-    def calculate_pantry_cost(self, current_cash:float):
-        """
-        Calculates the pantry cost of the ingredient using its pantry cost rate.
-
-        Parameters
-        ----------
-        current_cash : float
-            current amount of cash (£) held by the shop
-
-        Returns
-        -------
-        Updated value of the shop's cash after taking out the pantry cost. 
-        """
+    def getLeftoverQuantity(self):
+        """Calculates and returns the unused quantity of the ingredient."""
         self.leftover = self.capacity - self.quantity_used
-        self.pantry_cost = self.pantry_cost_rate*self.leftover
-        current_cash -= self.pantry_cost
-        return current_cash
-
-    def get_pantry_cost(self):
-        """Returns ingredient's total pantry cost."""
-        return self.pantry_cost
-
-    def get_leftover_quantity(self):
-        """Returns the unused quantity of the ingredient."""
         return self.leftover
 
-    def order_from_supplier(self, supplier, current_cash:float):
+    def getRestockCost(self, supplier):
         """
-        For restocking the ingredient to its maximum capacity, order_from_supplier calculates
-        the total quantity to be ordered from the supplier and the respective cost is subtracted
-        from the current cash held by shop.
+        For restocking the ingredient to its maximum capacity, getRestockCost calculates
+        the total quantity to be ordered from the supplier and the respective cost.
 
         Parameters
         ----------
         supplier : class
             Supplier class
-        current_cash : float
-            current amount of cash (£) held by the shop
 
         Returns
         -------
-        Updated value of the shop's cash after restocking from supplier
+        Cost of restocking a ingredient from supplier
         """
         quantity_used = self.quantity_used + math.ceil(self.leftover*self.deprec)
         if quantity_used > self.capacity:
             quantity_used = self.capacity
         if self.name == "Milk":
-            current_cash -= supplier.get_milk_rate()*quantity_used
-            return current_cash
+            restock_cost = supplier.getMilkRate()*quantity_used
+            return restock_cost
         elif self.name == "Beans":
-            current_cash -= supplier.get_beans_rate()*quantity_used
-            return current_cash
+            restock_cost = supplier.getBeansRate()*quantity_used
+            return restock_cost
         else:
-            current_cash -= supplier.get_spices_rate()*quantity_used
-            return current_cash
+            restock_cost = supplier.getSpicesRate()*quantity_used
+            return restock_cost
