@@ -123,7 +123,7 @@ class CoffeeShop:
         exception = "'"
         while name_exists is True:
             name = input("Please enter a valid barista name: ").strip().title()
-            if name=="" or any(char in characters for char in name) or (char in exception for char in name):
+            if name=="" or any(char in characters for char in name) or any(char in exception for char in name):
                 print("Please enter a name with no numbers and no special characters!")
             else:
                 if name in self.chosen_baristas:
