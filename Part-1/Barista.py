@@ -13,7 +13,7 @@ class Barista:
         number of hours a barista gets paid for
     rate_per_hour : float
         £ per hour a barista earns
-    hrs_worked : float
+    hrs_worked : fraction
         number of hours a barista works for (maximum a barista can work for is 80hrs)
     """
     def __init__(self):

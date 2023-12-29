@@ -119,9 +119,11 @@ class CoffeeShop:
         "Adds barista to the chosen_baristas dictionary."
         name_exists = True # boolean used to check if the name is unique or not
         # if barista already exists then user is prompted to enter a new name
+        characters = '"0123456789!@#$%^&*()~|\;:}{]{£.-+?_=,<>/'
+        exception = "'"
         while name_exists is True:
             name = input("Please enter a valid barista name: ").strip().title()
-            if name=="" or not name.isalpha():
+            if name=="" or any(char in characters for char in name) or (char in exception for char in name):
                 print("Please enter a name with no numbers and no special characters!")
             else:
                 if name in self.chosen_baristas:
@@ -175,11 +177,11 @@ class CoffeeShop:
         """
         speciality_valid_response = False # boolean used to check if barista has any speciality or not
         loop_bool = False
+        valid_answers = ["yes","y","no","n"]
+        print(f"Types of coffee served at {self.name}:")
+        print(*(list(self.coffeetypes.keys())), sep = ", ")
         # keeps asking until valid response is given
         while speciality_valid_response is False:
-            valid_answers = ["yes","y","no","n"]
-            print(f"Types of coffee served at {self.name}:")
-            print(*(list(self.coffeetypes.keys())), sep = ", ")
             while loop_bool is False:
                 print("Does this barista have a speciality in any one of the above coffee types?")
                 speciality_exists = input("Y/N: ").strip()
@@ -296,7 +298,11 @@ class CoffeeShop:
         print("\t Pantry")
         # prints out remaining quantity of each ingredient
         for ingredient in list(self.ingredients.values()):
-            print(f"\t\t {ingredient.getName()}, remaining {ingredient.getLeftoverQuantity():.2f} (capacity = {ingredient.getCapacity()})")
+            if ingredient.getName()=="Milk":
+                units = "L"
+            else:
+                units = "g"
+            print(f"\t\t {ingredient.getName()}, remaining {ingredient.getLeftoverQuantity():.2f}{units} (capacity = {ingredient.getCapacity()}{units})")
         print("\t Barista")
         # prints out baristas and their rates
         for barista in list(self.chosen_baristas.values()):
@@ -320,7 +326,7 @@ class CoffeeShop:
             return bankrupt
         else:
             self.current_cash -= self.fixed_monthly_rent
-            print(f"Paid rent/utilities £{self.fixed_monthly_rent:.2f}")
+            print(f"\tPaid rent/utilities £{self.fixed_monthly_rent:.2f}")
             bankrupt = False
             return bankrupt
     
@@ -339,7 +345,7 @@ class CoffeeShop:
             else:
                 self.current_cash -= barista_salary
                 barista.resetHrsWorked()
-                print(f"Paid {barista.getName()}, hourly rate = £{barista.getRatePerHour():.2f}, amount £{(barista_salary):.2f}")
+                print(f"\tPaid {barista.getName()}, hourly rate = £{barista.getRatePerHour():.2f}, amount £{(barista_salary):.2f}")
         return bankrupt
 
     def payPantryCosts(self):
@@ -356,7 +362,7 @@ class CoffeeShop:
                 break
             else:
                 self.current_cash -= pantry_cost
-                print(f"Pantry {ingredient.getName()} cost £{pantry_cost:.2f}")
+                print(f"\tPantry {ingredient.getName()} cost £{pantry_cost:.2f}")
         return bankrupt
 
     def restockIngredients(self):
@@ -365,9 +371,9 @@ class CoffeeShop:
         valid_response = False # boolean used to acquire valid response
         bankrupt = False
         # prompting user to select the supplier from the list
+        print("Supplier list: ")
+        print(*(list(self.suppliers.keys())), sep = ", ") 
         while valid_response is False:
-            print("Supplier list: ")
-            print(*(list(self.suppliers.keys())), sep = ", ") 
             supplier_choose = input("Please select a supplier from the above list to restock ingredients: ").strip().title()
             if supplier_choose in self.suppliers:
                 valid_response = True

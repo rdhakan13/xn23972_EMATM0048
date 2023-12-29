@@ -8,13 +8,15 @@ name_given = False # boolean value to check if shop name is provided or not
 while run_simulation is True:
 
     # keeps asking for a shop name until user provides one; shop name can be any combination alphabets, numbers,
-    # and or special characters
+    # and no special characters
+    characters = '"!@#$%^&*()~|\;:}{]{£.-+?_=,<>/'
+    exception = "'"
     while name_given is False:
         shop_name = input("Please enter your coffee shop name: ").strip().title()
-        if shop_name!="":
-            name_given = True
+        if shop_name=="" or any(char in characters for char in shop_name) or any(char in exception for char in shop_name):
+            print("Please enter a name with no special characters!")
         else:
-            print("No name was given!")
+            name_given = True
 
     # keeps asking for the number of months to simulate until a valid response is given; if no response or trailing
     # spaces is provided then default value of 6 is taken
@@ -66,10 +68,12 @@ while run_simulation is True:
                         # if no value is entered then user is prompted again
                         print("Please enter a positive integer!")
                     else:
+                        print("")
                         for i in range(no_of_baristas):
                             name, barista = Coffeeshop.addBarista()
                             # user is prompted if barista has any coffee making speciality
                             Coffeeshop.selectSpeciality(name, barista)
+                        print("")
                         response = True
                 except ValueError:
                     print("Please enter a positive integer!")
@@ -86,11 +90,13 @@ while run_simulation is True:
                         if (add_or_remove + len(Coffeeshop.getChosenBaristas())) > 4:
                             print(f"The shop can only take a maximum of 4 baristas at a time, currently there are {len(Coffeeshop.getChosenBaristas())}!")
                         else:
+                            print("")
                             for i in range(abs(add_or_remove)):
                                 # adds barista
                                 name, barista = Coffeeshop.addBarista()
                                 # prompts user if new barista has any speciality in any of the coffee types
                                 Coffeeshop.selectSpeciality(name, barista)
+                            print("")
                             response = True
                     # if user decides to remove baristas
                     elif add_or_remove < 0:
@@ -98,9 +104,11 @@ while run_simulation is True:
                         if (add_or_remove + len(Coffeeshop.getChosenBaristas())) <= 0:
                             print(f"The shop must have at least 1 barista, currently there are {len(Coffeeshop.getChosenBaristas())}!")
                         else:
+                            print("")
                             for i in range(abs(add_or_remove)):
                                 # removes barista
                                 Coffeeshop.removeBarista()
+                            print("")
                             response = True
                     else:
                         response = True
@@ -119,7 +127,7 @@ while run_simulation is True:
                     demand = int(input(f"Coffee {coffee.getName()}, demand {coffee.getMonDem()}, how much to sell: "))
                     if demand > coffee.getMonDem():
                         # if input value is greater than requested demand, error message is printed
-                        print(f"Please enter a value less than or equal to {coffee.getMonDem()}")
+                        print(f"Please do not exceed the demand of {coffee.getMonDem()}!")
                     elif demand >=0:
                         # checks supplies by calling on checkSupply method from CoffeeType class
                         sufficient_supply = coffee.checkSupply(demand, Coffeeshop.getChosenBaristas(), Coffeeshop.getIngredients())
@@ -161,6 +169,8 @@ while run_simulation is True:
         # collecting income from selling coffee
         Coffeeshop.collectCoffeeIncome()
         # paying monthly rent
+        print("")
+        print("Expenses:")
         bankrupt = Coffeeshop.payMonthlyRent()
         if bankrupt is True:
             print(f"Went bankrupt in month {month}")
@@ -182,19 +192,25 @@ while run_simulation is True:
                     break
                 else:
                     # printing ingredient quantity and cash status
+                    print("")
                     Coffeeshop.printStatus()
                     # restocking ingredient and paying up supplier
+                    print("")
                     bankrupt = Coffeeshop.restockIngredients()
                     if bankrupt is True:
+                        print("")
                         print(f"Went bankrupt in month {month}")
+                        print('--------------------------------------------------------------------------')
                         print("")
                         break
                     else:
+                        print("")
                         print("All expenses have been paid!")
                         print("All ingredients have been fully restocked.")
+                        print('--------------------------------------------------------------------------')
                         print(f"MONTH {month} FINAL BALANCE: {Coffeeshop.getCurrentCash():.2f}")
                         print('--------------------------------------------------------------------------')
-                        print(" ")
+                        print("")
 
     run_simulation_response = False # boolean value to check if valid response is given to continue with another simulation
     positive_response = ["Y","Yes"]
@@ -207,6 +223,7 @@ while run_simulation is True:
             run_simulation = True
             valid_response = False
             run_simulation_response = True
+            print("")
         elif run_simulation in negative_response:
             run_simulation = False
             run_simulation_response = True
