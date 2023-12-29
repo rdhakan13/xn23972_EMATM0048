@@ -1,3 +1,5 @@
+"""Raj Dhakan (xn23972) | Part-1 | Supplier.py contains the Supplier class."""
+
 class Supplier:
     """
     A class to represent supplier and its attributes.

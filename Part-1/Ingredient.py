@@ -1,3 +1,5 @@
+"""Raj Dhakan (xn23972) | Part-1 | Ingredient.py contains the Ingredient class."""
+
 import math # used for rounding up depreciated quantity value
 
 class Ingredient:

@@ -1,3 +1,5 @@
+"""Raj Dhakan (xn23972) | Part-1 | CoffeeShop.py contains the CoffeeShop class."""
+
 from Ingredient import Ingredient
 from Supplier import Supplier
 from Barista import Barista
@@ -61,11 +63,11 @@ class CoffeeShop:
     def getCoffeeTypes(self):
         """Returns coffeetypes dictionary."""
         return self.coffeetypes
-    
+
     def getIngredients(self):
         """Returns ingredients dictionary."""
         return self.ingredients
-    
+
     def getCurrentCash(self):
         """Returns cash (£) held by the shop at any given time."""
         return self.current_cash
@@ -73,15 +75,15 @@ class CoffeeShop:
     def getChosenBaristas(self):
         """Returns baristas dictionary."""
         return self.chosen_baristas
-    
+
     def getAllSpecialityStaffName(self):
         """Returns a list of all baristas names who have a coffee making speciality."""
         return self.all_speciality_staff_name
-    
+
     def getAllNormalStaffName(self):
         """Returns a list of all baristas names who do not have a coffee making speciality."""
         return self.all_normal_staff_name
-    
+
     def setMonth(self, month:int):
         """Sets the simulation month number."""
         self.simulation_month = month
@@ -162,7 +164,8 @@ class CoffeeShop:
 
     def selectSpeciality(self, name, barista):
         """
-        Prompts user to enter barista's coffee making speciality (if any) from a list of coffees served at the shop.
+        Prompts user to enter barista's coffee making speciality (if any) from a list of
+        coffees served at the shop.
 
         Parameters
         ----------
@@ -175,7 +178,8 @@ class CoffeeShop:
         -------
         None
         """
-        speciality_valid_response = False # boolean used to check if barista has any speciality or not
+        # boolean used to check if barista has any speciality or not
+        speciality_valid_response = False 
         loop_bool = False
         valid_answers = ["yes","y","no","n"]
         print(f"Types of coffee served at {self.name}:")
@@ -222,8 +226,8 @@ class CoffeeShop:
         barista_list : list
             list of baristas who are to be assigned the time to fulfil the demand
         speciality : bool
-            a boolean to indicate whether the list of barista contains baristas with any specialities
-            any of the coffee types
+            a boolean to indicate whether the list of barista contains baristas with any
+            specialities any of the coffee types
 
         Returns
         -------
@@ -239,29 +243,25 @@ class CoffeeShop:
             if self.chosen_baristas[name].getHrsWorked()!=80:
                 avl = Fraction(80) - Fraction(self.chosen_baristas[name].getHrsWorked())
                 # if available (avl) hrs for each barista is greater than hrs demand for serving
-                # type of coffee then all the hrs are assigned to one barista, else the remainder (rem)
-                # number of hrs is assigned to the next barista in line
+                # type of coffee then all the hrs are assigned to one barista, else the remainder 
+                # (rem) number of hrs is assigned to the next barista in line
                 if rem >0:
                     if rem > avl:
                         rem = rem - avl
                         self.chosen_baristas[name].increaseHrsWorked(avl)
-                        print(f"+ {avl} {name}")
                     else:
                         self.chosen_baristas[name].increaseHrsWorked(rem)
-                        print(f"+ {rem} {name}")
                         rem = 0
                         break
                 elif avl >= ((Fraction(demand)*Fraction(coffeetype.getPrepTime()))/denom):
                     hrs = (Fraction(demand)*Fraction(coffeetype.getPrepTime()))/denom
                     self.chosen_baristas[name].increaseHrsWorked(hrs)
-                    print(f"+ {hrs} {name}")
                     break
                 else:
                     rem = ((Fraction(demand)*Fraction(coffeetype.getPrepTime()))/denom) - avl
                     self.chosen_baristas[name].increaseHrsWorked(avl)
-                    print(f"+ {avl} {name}")
         return rem
-        
+
     def assignLeftoverDemand(self, rem, barista_list:list):
         """
         Calculates the updated quantity used by the ingredient based on serving the demand.
@@ -285,15 +285,14 @@ class CoffeeShop:
                         if rem > avl:
                             rem = rem - avl
                             self.chosen_baristas[name].increaseHrsWorked(avl)
-                            print(f"+{avl} {self.chosen_baristas[name].getName()}")
                         else:
                             self.chosen_baristas[name].increaseHrsWorked(rem)
-                            print(f"+{rem} {self.chosen_baristas[name].getName()}")
                             rem = 0
                             break
 
     def printStatus(self):
-        """Prints out the shop name, cash status, quantity of each ingredient available and hired baristas."""
+        """Prints out the shop name, cash status, quantity of each ingredient available and
+        hired baristas."""
         print(f"Shop Name: {self.name}, Cash: £{self.current_cash:.2f}")
         print("\t Pantry")
         # prints out remaining quantity of each ingredient
@@ -314,10 +313,10 @@ class CoffeeShop:
             coffee_income = coffee.getQuantitySold()*coffee.getSellPrice()
             self.current_cash += coffee_income
             coffee.resetSoldQuantity()
-    
+
     def payMonthlyRent(self):
-        """Returns a boolean to indicate if there sufficient cash to pay the monthly rent and if there is then 
-        rent is deducted from the cash held by the shop."""
+        """Returns a boolean to indicate if there sufficient cash to pay the monthly rent and if
+        there is then rent is deducted from the cash held by the shop."""
         if (self.current_cash - self.fixed_monthly_rent) < 0:
             print("Insufficient cash to make utilities payment!")
             # informs user how much is required vs current cash that shop has
@@ -329,10 +328,10 @@ class CoffeeShop:
             print(f"\tPaid rent/utilities £{self.fixed_monthly_rent:.2f}")
             bankrupt = False
             return bankrupt
-    
+
     def payBaristas(self):
-        """Returns a boolean to indicate if there sufficient cash to pay all the baristas and if there is then 
-        salaries are deducted from the cash held by the shop."""
+        """Returns a boolean to indicate if there sufficient cash to pay all the baristas and if
+        there is then salaries are deducted from the cash held by the shop."""
         bankrupt = False
         for barista in list(self.chosen_baristas.values()):
             barista_salary = barista.getRatePerHour()*barista.getHrsPaid()
@@ -349,8 +348,8 @@ class CoffeeShop:
         return bankrupt
 
     def payPantryCosts(self):
-        """Returns a boolean to indicate if there sufficient cash to pay all the pantry costs and if there is then 
-        costs are deducted from the cash held by the shop."""
+        """Returns a boolean to indicate if there sufficient cash to pay all the pantry costs and if
+        there is then costs are deducted from the cash held by the shop."""
         bankrupt = False
         for ingredient in list(self.ingredients.values()):
             pantry_cost = ingredient.getPantryCostRate()*ingredient.getLeftoverQuantity()
@@ -366,8 +365,8 @@ class CoffeeShop:
         return bankrupt
 
     def restockIngredients(self):
-        """Returns a boolean to indicate if there sufficient cash to restock all the ingredients and if there is then 
-        costs are deducted from the cash held by the shop."""
+        """Returns a boolean to indicate if there sufficient cash to restock all the ingredients and if
+        there is then costs are deducted from the cash held by the shop."""
         valid_response = False # boolean used to acquire valid response
         bankrupt = False
         # prompting user to select the supplier from the list

@@ -1,3 +1,5 @@
+"""Raj Dhakan (xn23972) | Part-1 | CoffeeType.py contains the CoffeeType class."""
+
 import math # used to round down capacity values
 from fractions import Fraction # used to avoid rounding errors
 
@@ -113,35 +115,35 @@ class CoffeeType:
         """
         sufficient_supply = True # boolean used
         messages = [] # list of error messages when ingredients have insufficient capacity
-        ingredient_capacity = [] # list to hold the maximum capacity for each ingredient with current quantities
+        ingredient_capacity = [] # list to hold the max capacity for each ingredient with current quantities
         total_time_available = 0 # total time available from all baristas
         time_from_specialist = 0 # time available from specialist baristas
 
-        # iterating through list of baristas to cumulate total time available (in hrs) and also separately
-        # cumulate time available from specialist barista for the given coffee type
+        # iterating through list of baristas to cumulate total time available (in hrs) and also
+        # separately cumulate time available from specialist barista for the given coffee type
         for barista in list(baristas_dict.values()):
             total_time_available += Fraction(80) - Fraction(barista.getHrsWorked())
             if barista.getSpeciality()==self.name:
                 time_from_specialist += Fraction(80) - Fraction(barista.getHrsWorked())
 
-        # given the time available, for both specialist and non specialist baristas, the below calculates
-        # the total capacity of barista given if ingredients were not the limiting factor
+        # given the time available, for both specialist and non specialist baristas, the below
+        # calculates the total capacity of barista given if ingredients were not the limiting factor
         capacity_normal_staff = (Fraction(total_time_available)-Fraction(time_from_specialist))/(Fraction(self.prep_time)/Fraction(60))
         capacity_specialist = Fraction(time_from_specialist)/(Fraction(self.prep_time)/Fraction(120))
         barista_capacity = math.floor(capacity_normal_staff+capacity_specialist)
 
-        # iterating through the ingredients dictionary to check if the each ingredient as sufficient supply
-        # to meet the requested demand
+        # iterating through the ingredients dictionary to check if the each ingredient as sufficient
+        # supply to meet the requested demand
         for ingredient in list(ingredients.values()):
             if ingredient.getName() == "Milk":
                 req = demand*self.milk_reqd
                 if req!=0:
                     avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
                     ingredient_capacity.append(math.floor(avl/self.milk_reqd))
-                    # if the available (avl) quantity is less than the requested (req) then an warning message
-                    # is logged
+                    # if the available (avl) quantity is less than the requested (req) then an 
+                    # warning message is logged
                     if avl < req:
-                        messages.append(f"Milk need {req:.1f}L, pantry contains only {avl:.1f}L")
+                        messages.append(f"\tMilk need {req:.1f}L, pantry contains only {avl:.1f}L")
                 else:
                     pass
             elif ingredient.getName() == "Beans":
@@ -150,7 +152,7 @@ class CoffeeType:
                     avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
                     ingredient_capacity.append(math.floor(avl/self.beans_reqd))
                     if avl < req:
-                        messages.append(f"Beans need {req:.1f}g, pantry contains only {avl:.1f}g")
+                        messages.append(f"\tBeans need {req:.1f}g, pantry contains only {avl:.1f}g")
                 else:
                     pass
             else:
@@ -159,15 +161,15 @@ class CoffeeType:
                     avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
                     ingredient_capacity.append(math.floor(avl/self.spices_reqd))
                     if avl < req:
-                        messages.append(f"Spices need {req:.1f}g, pantry contains only {avl:.1f}g")
+                        messages.append(f"\tSpices need {req:.1f}g, pantry contains only {avl:.1f}g")
                 else:
                     pass
-        
+
         # the below provide 4 possibilities:
         # 1. barista capacity is the limiting factor (i.e. not enough barista hrs to fulfil demand)
         # 2. one or more ingredients are the limiting factor
-        # 3. both barista and ingredients supplies are less than demand, however the dictating limiting
-        # #  factor is found and then the appropriate error message is displayed
+        # 3. both barista and ingredients supplies are less than demand, however the dictating
+        # # limiting factor is found and then the appropriate error message is displayed
         # 4. all supplies are sufficient
         if ((barista_capacity < demand) and not messages):
             sufficient_supply = False
