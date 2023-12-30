@@ -38,7 +38,7 @@ LIN,Linde plc,Materials,United Kingdom,Guildford,193.33,32.45,18.44,12.08,32.98
 TMO,Thermo Fisher Scientific,Health Care,United States,Massachusetts,190.91,43.42,13.68,15.27,32.38
 TMUS,T-Mobile US,Communication Services,United States,Washington,180.86,78.35,9.93,6.44,24.28
 ABT,Abbott,Health Care,United States,Illinois,180.64,39.96,12.92,2.94,35.39
-INTC,Intel,Information Technology,United States,California,177.7,52.86,-3.11,-0.39,-125.63
+INTC,Intel,Information Technology,United States,California,177.7,52.86,-3.11,-0.39,-106.5
 NKE,"Nike, Inc.",Consumer Discretionary,United States,Oregon,174.73,51.47,9.82,3.24,35.44
 CMCSA,Comcast,Communication Services,United States,Pennsylvania,169.74,120.87,12.53,3.59,11.75
 DIS,Disney,Communication Services,United States,California,169.03,88.9,2.65,1.29,71.59
@@ -100,7 +100,7 @@ ETN,Eaton Corporation,Industrials,Ireland,Dublin,91.01,22.61,13.24,7.48,30.51
 ABNB,Airbnb,Consumer Discretionary,United States,California,89.63,9.6,56.87,8.22,17.01
 BX,Blackstone,Financials,United States,New York,85.38,8.24,21.8,2.39,47.64
 ZTS,Zoetis,Health Care,United States,New Jersey,83.48,8.37,27.24,4.91,37.03
-MU,Micron Technology,Information Technology,United States,Idaho,81.26,15.54,-37.53,-5.34,10.05
+MU,Micron Technology,Information Technology,United States,Idaho,81.26,15.54,-37.53,-5.34,-13.95
 SNPS,Synopsys,Information Technology,United States,California,81.17,5.84,21.05,7.9,67.4
 BSX,Boston Scientific,Health Care,United States,Massachusetts,80.62,13.76,8.93,0.82,67.11
 FI,Fiserv,Financials,United States,Wisconsin,78.88,18.81,15.85,4.77,27.55
@@ -138,7 +138,7 @@ HUM,Humana,Health Care,United States,Kentucky,59.13,102.35,2.95,24.16,19.86
 LULU,Lululemon Athletica,Consumer Discretionary,Canada,Vancouver,58.84,8.84,11.4,7.86,59.16
 APD,Air Products and Chemicals,Materials,United States,Pennsylvania,58.22,12.6,18.26,10.3,25.44
 ROP,Roper Technologies,Information Technology,United States,Florida,57.13,6.0,48.77,11.55,46.3
-MMM,3M,Industrials,United States,Minnesota,57.04,32.75,-22.59,-13.31,16.99
+MMM,3M,Industrials,United States,Minnesota,57.04,32.75,-22.59,-13.31,-7.74
 MNST,Monster Beverage,Consumer Staples,United States,California,56.49,6.92,22.62,1.48,36.81
 CTAS,Cintas,Industrials,United States,Ohio,56.4,8.99,15.36,13.29,41.63
 ORLY,O'Reilly Auto Parts,Consumer Discretionary,United States,Missouri,56.39,15.62,14.86,37.55,25.38
@@ -172,7 +172,7 @@ MCHP,Microchip Technology,Information Technology,United States,Arizona,46.42,8.9
 SRE,Sempra Energy,Utilities,United States,California,45.97,16.68,16.63,4.32,16.91
 AIG,American International Group,Financials,United States,New York,45.92,50.15,8.28,5.76,11.36
 GM,General Motors,Consumer Discretionary,United States,Michigan,45.89,171.97,5.83,7.12,4.71
-NEM,Newmont,Materials,United States,Colorado,45.79,11.05,-7.35,-1.06,44.33
+NEM,Newmont,Materials,United States,Colorado,45.79,11.05,-7.35,-1.06,0.0
 CPRT,Copart,Industrials,United States,Texas,45.76,4.0,33.14,1.37,34.79
 AZO,AutoZone,Consumer Discretionary,United States,Tennessee,45.61,17.66,14.62,137.43,19.15
 DHI,D.R. Horton,Consumer Discretionary,United States,Texas,45.43,35.46,13.38,13.82,9.87
@@ -256,7 +256,7 @@ PEG,Public Service Enterprise Group,Utilities,United States,New Jersey,31.1,11.7
 HAL,Halliburton,Energy,United States,Texas,30.81,22.86,11.52,2.91,11.83
 GEHC,GE HealthCare,Health Care,United States,Illinois,30.68,19.28,8.91,3.37,20.0
 RCL,Royal Caribbean Group,Consumer Discretionary,United States,Florida,30.62,13.17,6.98,3.27,36.43
-MRNA,Moderna,Health Care,United States,Massachusetts,30.48,9.12,-38.0,-9.23,7.06
+MRNA,Moderna,Health Care,United States,Massachusetts,30.48,9.12,-38.0,-9.23,-8.78
 DD,DuPont,Materials,United States,Delaware,30.41,12.27,38.06,1.97,35.9
 LYB,LyondellBasell,Materials,Netherlands,Rotterdam,29.9,41.38,5.51,6.99,13.19
 IR,Ingersoll Rand,Industrials,United States,North Carolina,29.37,6.68,11.47,1.84,39.43
@@ -277,7 +277,7 @@ SBAC,SBA Communications,Real Estate,United States,Florida,27.09,2.72,18.2,4.55,5
 WEC,WEC Energy Group,Utilities,United States,Wisconsin,26.81,9.23,14.79,4.32,19.68
 BF.B,Brown–Forman,Consumer Staples,United States,Kentucky,26.44,4.27,18.26,1.62,33.65
 FANG,Diamondback Energy,Energy,United States,Texas,26.42,7.74,41.19,17.62,8.37
-WBD,Warner Bros. Discovery,Communication Services,United States,New York,26.39,42.05,-11.48,-1.94,-5.87
+WBD,Warner Bros. Discovery,Communication Services,United States,New York,26.39,42.05,-11.48,-1.94,-5.94
 TTWO,Take-Two Interactive,Communication Services,United States,New York,26.23,5.44,-27.83,-9.07,0.0
 CAH,Cardinal Health,Health Care,United States,Ohio,26.22,210.17,0.07,0.61,174.39
 DAL,Delta Air Lines,Industrials,United States,Georgia,25.96,57.26,5.94,5.3,7.61
@@ -299,7 +299,7 @@ MTD,Mettler Toledo,Health Care,United States,Ohio,23.85,3.91,22.24,39.16,28.06
 GRMN,Garmin,Consumer Discretionary,Switzerland,Schaffhausen,23.8,5.05,20.6,5.42,22.95
 ULTA,Ulta Beauty,Consumer Discretionary,United States,Illinois,23.79,10.88,11.37,24.64,19.87
 HIG,Hartford (The),Financials,United States,Connecticut,23.55,24.17,9.6,7.27,10.77
-CCL,Carnival,Consumer Discretionary,United States,Florida,23.42,20.04,-8.1,-1.29,5.99
+CCL,Carnival,Consumer Discretionary,United States,Florida,23.42,20.04,-8.1,-1.29,-14.04
 CHD,Church & Dwight,Consumer Staples,United States,New Jersey,23.2,5.78,7.57,1.76,53.49
 APTV,Aptiv,Consumer Discretionary,Ireland,Dublin,22.87,19.77,11.54,8.03,10.07
 TSCO,Tractor Supply,Consumer Discretionary,United States,Tennessee,22.61,14.9,7.58,10.25,20.4
@@ -331,7 +331,7 @@ INVH,Invitation Homes,Real Estate,United States,Texas,20.04,2.37,20.67,0.81,40.4
 ROL,"Rollins, Inc.",Industrials,United States,Georgia,20.02,2.98,13.77,0.83,49.83
 STE,Steris,Health Care,Ireland,Dublin,19.96,5.23,10.52,5.51,36.59
 EXPE,Expedia Group,Consumer Discretionary,United States,Washington,19.95,12.57,6.7,5.46,26.32
-WBA,Walgreens Boots Alliance,Consumer Staples,United States,Illinois,19.78,139.08,-2.21,-3.57,5.98
+WBA,Walgreens Boots Alliance,Consumer Staples,United States,Illinois,19.78,139.08,-2.21,-3.57,0.0
 IFF,International Flavors & Fragrances,Materials,United States,New York,19.66,11.62,0.16,0.06,1.28
 JBHT,J.B. Hunt,Industrials,United States,Arkansas,19.48,13.18,5.89,7.42,25.42
 PTC,PTC,Information Technology,United States,Massachusetts,19.46,2.1,11.71,2.06,79.23
@@ -343,7 +343,7 @@ IRM,Iron Mountain,Real Estate,United States,Massachusetts,19.15,5.34,5.21,0.94,6
 TRGP,Targa Resources,Energy,United States,Texas,18.89,16.38,8.33,3.81,22.24
 GPC,Genuine Parts Company,Consumer Discretionary,United States,Georgia,18.83,23.03,5.43,8.86,15.16
 CBOE,Cboe Global Markets,Financials,United States,Illinois,18.71,3.81,18.61,6.65,26.7
-ILMN,Illumina,Health Care,United States,California,18.6,4.46,-25.2,-7.1,-19.56
+ILMN,Illumina,Health Care,United States,California,18.6,4.46,-25.2,-7.1,-16.07
 VTR,Ventas,Real Estate,United States,Illinois,18.6,4.36,0.11,0.02,2.31
 K,Kellanova,Consumer Staples,United States,Illinois,18.55,15.87,5.21,2.38,22.76
 BAX,Baxter International,Health Care,United States,Illinois,18.53,15.28,16.96,0.46,79.41
@@ -353,7 +353,7 @@ CTRA,Coterra,Energy,United States,Texas,18.49,6.39,35.05,2.89,8.51
 LH,LabCorp,Health Care,United States,North Carolina,18.48,15.07,4.39,9.71,22.41
 VLTO,Veralto,Industrials,United States,Massachusetts,18.38,4.98,17.17,2.93,25.47
 NTAP,NetApp,Information Technology,United States,California,18.35,6.1,11.34,3.24,27.48
-TSN,Tyson Foods,Consumer Staples,United States,Arkansas,18.31,52.88,-1.23,-1.87,-97.73
+TSN,Tyson Foods,Consumer Staples,United States,Arkansas,18.31,52.88,-1.23,-1.87,-93.38
 WRB,Berkley,Financials,United States,Connecticut,18.28,11.94,11.45,4.96,14.29
 MKC,McCormick & Company,Consumer Staples,United States,Maryland,18.19,6.61,9.8,2.4,28.22
 CNP,CenterPoint Energy,Utilities,United States,Texas,18.15,9.22,9.31,1.26,22.83
@@ -376,7 +376,7 @@ EG,Everest Re,Financials,Bermuda,Hamilton,16.63,14.15,15.61,54.09,7.08
 HOLX,Hologic,Health Care,United States,Massachusetts,16.61,4.03,11.31,1.83,37.83
 ALGN,Align Technology,Health Care,United States,Arizona,16.59,3.81,9.53,4.72,45.88
 NTRS,Northern Trust,Financials,United States,Illinois,16.53,6.73,17.09,5.27,15.15
-STX,Seagate Technology,Information Technology,Ireland,Dublin,16.48,6.8,-10.91,-3.58,-23.91
+STX,Seagate Technology,Information Technology,Ireland,Dublin,16.48,6.8,-10.91,-3.58,-22.43
 HUBB,Hubbell Incorporated,Industrials,United States,Connecticut,16.42,5.25,13.22,13.17,23.27
 SWKS,Skyworks Solutions,Information Technology,United States,California,16.36,4.77,20.59,6.13,16.68
 OMC,Omnicom Group,Communication Services,United States,New York,16.25,14.5,9.62,6.87,11.95
@@ -389,7 +389,7 @@ IEX,IDEX Corporation,Industrials,United States,Illinois,15.55,3.3,18.74,8.12,25.
 CE,Celanese,Materials,United States,Texas,15.43,10.72,18.93,18.59,7.62
 FSLR,First Solar,Information Technology,United States,Arizona,15.4,3.16,14.99,4.43,32.62
 L,Loews Corporation,Financials,United States,New York,15.36,15.44,9.93,6.57,10.47
-WDC,Western Digital,Information Technology,United States,California,15.34,11.33,-21.34,-7.7,-6.84
+WDC,Western Digital,Information Technology,United States,California,15.34,11.33,-21.34,-7.7,-6.24
 EPAM,EPAM Systems,Information Technology,United States,Pennsylvania,15.25,4.76,9.96,8.01,32.96
 EQT,EQT,Energy,United States,Pennsylvania,15.22,6.18,47.67,7.3,5.07
 DGX,Quest Diagnostics,Health Care,United States,New Jersey,15.2,9.3,8.21,6.71,20.15
@@ -405,7 +405,7 @@ LW,Lamb Weston,Consumer Staples,United States,Idaho,14.64,5.89,17.18,6.95,14.53
 ENPH,Enphase,Information Technology,United States,California,14.63,2.71,21.08,3.99,26.86
 SYF,Synchrony Financial,Financials,United States,Connecticut,14.44,7.7,30.85,5.43,6.43
 ESS,Essex Property Trust,Real Estate,United States,California,14.43,1.7,30.95,8.14,27.59
-SWK,Stanley Black & Decker,Industrials,United States,Connecticut,14.28,16.03,-0.32,-0.75,-245.25
+SWK,Stanley Black & Decker,Industrials,United States,Connecticut,14.28,16.03,-0.32,-0.75,-230.12
 GEN,Gen Digital,Information Technology,United States,Arizona,14.27,3.78,37.54,2.23,9.98
 CAG,Conagra Brands,Consumer Staples,United States,Illinois,14.24,12.28,8.8,2.25,13.24
 MAS,Masco,Industrials,United States,Michigan,14.23,8.01,10.39,3.67,17.27
@@ -454,7 +454,7 @@ TECH,Bio-Techne,Health Care,United States,Minnesota,10.76,1.14,21.57,1.52,44.75
 NRG,NRG Energy,Utilities,United States,Texas,10.72,29.87,-5.96,-7.7,0.0
 PAYC,Paycom,Industrials,United States,Oklahoma,10.69,1.63,20.8,5.84,31.72
 KMX,CarMax,Consumer Discretionary,United States,Virginia,10.61,28.54,1.59,2.86,23.38
-WRK,WestRock,Materials,United States,Georgia,10.51,20.31,-8.12,-6.44,12.56
+WRK,WestRock,Materials,United States,Georgia,10.51,20.31,-8.12,-6.44,-6.42
 CRL,Charles River Laboratories,Health Care,United States,Massachusetts,10.4,4.22,11.27,9.23,21.97
 CDAY,Ceridian,Industrials,United States,Minnesota,10.37,1.45,0.28,0.03,2.21
 APA,APA Corporation,Energy,United States,Texas,10.37,8.44,18.07,5.01,6.75
@@ -464,7 +464,7 @@ FFIV,"F5, Inc.",Information Technology,United States,Washington,10.1,2.81,14.04,
 EMN,Eastman Chemical Company,Materials,United States,Tennessee,10.08,9.38,6.24,4.98,17.08
 CHRW,C.H. Robinson,Industrials,United States,Minnesota,10.04,18.44,2.12,3.36,25.61
 CPT,Camden Property Trust,Real Estate,United States,Texas,9.97,1.53,14.77,2.04,45.78
-PARA,Paramount Global,Communication Services,United States,New York,9.94,30.14,-3.65,-2.33,-8.31
+PARA,Paramount Global,Communication Services,United States,New York,9.94,30.14,-3.65,-2.33,-9.6
 MKTX,MarketAxess,Financials,United States,New York,9.89,0.73,33.78,6.6,39.59
 QRVO,Qorvo,Information Technology,United States,North Carolina,9.76,3.13,-3.21,-0.92,0.0
 HII,Huntington Ingalls Industries,Industrials,United States,Virginia,9.74,11.09,4.78,13.24,18.5
@@ -477,7 +477,7 @@ ALLE,Allegion,Industrials,Ireland,Dublin,9.23,3.61,15.41,6.32,16.63
 JNPR,Juniper Networks,Information Technology,United States,California,9.2,5.65,6.49,1.12,25.77
 UHS,Universal Health Services,Health Care,United States,Pennsylvania,9.17,14.03,4.82,9.53,14.11
 AAL,American Airlines Group,Industrials,United States,Texas,9.09,52.91,3.04,2.39,5.82
-BIO,Bio-Rad,Health Care,United States,California,9.04,2.72,-5.86,-6.02,-56.45
+BIO,Bio-Rad,Health Care,United States,California,9.04,2.72,-5.86,-6.02,-53.5
 AIZ,Assurant,Financials,United States,Georgia,8.82,10.8,4.89,9.83,17.08
 RHI,Robert Half,Industrials,United States,California,8.8,6.65,7.09,4.42,18.8
 MTCH,Match Group,Communication Services,United States,Texas,8.76,3.28,15.42,1.77,18.21
@@ -485,19 +485,19 @@ PNW,Pinnacle West,Utilities,United States,Arizona,8.62,4.71,10.13,4.19,18.15
 RL,Ralph Lauren Corporation,Consumer Discretionary,United States,New York,8.48,6.5,8.12,7.83,16.75
 BBWI,"Bath & Body Works, Inc.",Consumer Discretionary,United States,Ohio,8.36,7.41,9.9,3.14,11.79
 FRT,Federal Realty,Real Estate,United States,Maryland,8.08,1.12,25.67,3.44,28.78
-NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,United States,Florida,7.99,8.08,-2.6,-0.53,3.81
+NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,United States,Florida,7.99,8.08,-2.6,-0.53,0.0
 BWA,BorgWarner,Consumer Discretionary,United States,Michigan,7.77,17.16,4.23,4.1,8.06
 TPR,"Tapestry, Inc.",Consumer Discretionary,United States,New York,7.6,6.67,14.03,3.93,8.43
 GNRC,Generac,Industrials,United States,Wisconsin,7.41,4.01,4.72,2.53,47.65
-VFC,VF Corporation,Consumer Discretionary,United States,Colorado,7.08,11.39,-1.89,-0.55,111.9
+VFC,VF Corporation,Consumer Discretionary,United States,Colorado,7.08,11.39,-1.89,-0.55,-33.15
 FMC,FMC Corporation,Materials,United States,Pennsylvania,6.91,4.96,10.01,4.7,11.78
-XRAY,Dentsply Sirona,Health Care,United States,North Carolina,6.88,3.94,-5.44,-1.01,126.19
+XRAY,Dentsply Sirona,Health Care,United States,North Carolina,6.88,3.94,-5.44,-1.01,0.0
 IVZ,Invesco,Financials,United States,Georgia,6.8,5.75,14.5,1.3,11.64
-HAS,Hasbro,Consumer Discretionary,United States,Rhode Island,6.76,5.39,-10.33,-4.02,35.61
+HAS,Hasbro,Consumer Discretionary,United States,Rhode Island,6.76,5.39,-10.33,-4.02,-12.11
 CTLT,Catalent,Health Care,United States,New Jersey,6.75,4.24,-22.36,-1.29,0.0
 CMA,Comerica,Financials,United States,Texas,6.49,3.72,32.2,8.83,5.58
-WHR,Whirlpool Corporation,Consumer Discretionary,United States,Michigan,6.08,19.29,-8.37,-28.88,12.72
-MHK,Mohawk Industries,Consumer Discretionary,United States,Georgia,5.9,11.17,-4.88,-8.58,7.61
+WHR,Whirlpool Corporation,Consumer Discretionary,United States,Michigan,6.08,19.29,-8.37,-28.88,-3.75
+MHK,Mohawk Industries,Consumer Discretionary,United States,Georgia,5.9,11.17,-4.88,-8.58,0.0
 ZION,Zions Bancorporation,Financials,United States,Utah,5.69,3.08,27.19,5.4,7.11
 SEE,Sealed Air,Materials,United States,North Carolina,4.94,5.52,5.65,2.13,16.07
 ALK,Alaska Air Group,Industrials,United States,Washington,4.61,10.35,2.5,2.01,17.9
