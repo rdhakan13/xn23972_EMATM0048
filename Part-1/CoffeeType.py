@@ -135,7 +135,7 @@ class CoffeeType:
         # iterating through the ingredients dictionary to check if the each ingredient as sufficient
         # supply to meet the requested demand
         for ingredient in list(ingredients.values()):
-            if ingredient.getName() == "Milk":
+            if ingredient.get_name() == "Milk":
                 req = demand*self.milk_reqd
                 if req!=0:
                     avl = ingredient.get_capacity() - ingredient.get_quantity_used()
@@ -146,7 +146,7 @@ class CoffeeType:
                         messages.append(f"\tMilk need {req:.1f}L, pantry contains only {avl:.1f}L")
                 else:
                     pass
-            elif ingredient.getName() == "Beans":
+            elif ingredient.get_name() == "Beans":
                 req = demand*self.beans_reqd
                 if req!=0:
                     avl = ingredient.get_capacity() - ingredient.get_quantity_used()
