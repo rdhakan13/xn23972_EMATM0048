@@ -33,12 +33,16 @@ The program has been extended in 2 ways to aid the decision making of the user s
 
 ### How to run the program
 To run the simulation, first open the terminal and navigate to the directory of the Part-1 folder. Then type the below line:
-`python main.py`
+```
+python main.py
+```
 
 
 ## Part 2 - Exploratory Data Analysis
 
 [yfinance](https://github.com/ranaroussi/yfinance) is an open source python library built by Ran Aroussi. It is a code to fetch market data from Yahoo Finance's API. This library is used to fetch income statement values and Recommendation Scores from analysts for each stock.  
 
-To install yfinance, ensure you have minimum Python 3.4. Install yfinance using pip:
-`pip install yfinance`
+To install `yfinance`, ensure you have minimum Python 3.4. Install `yfinance` using `pip`:
+```
+pip install yfinance
+```
