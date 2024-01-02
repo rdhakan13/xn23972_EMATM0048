@@ -1,10 +1,10 @@
 """Raj Dhakan (xn23972) | Part-1 | CoffeeShop.py contains the CoffeeShop class."""
 
+from fractions import Fraction # used to avoid rounding errors
 from Ingredient import Ingredient
 from Supplier import Supplier
 from Barista import Barista
 from CoffeeType import CoffeeType
-from fractions import Fraction # used to avoid rounding errors
 
 class CoffeeShop:
     """
@@ -60,42 +60,42 @@ class CoffeeShop:
         self.all_speciality_staff_name = []
         self.all_normal_staff_name = []
 
-    def getCoffeeTypes(self):
+    def get_coffee_types(self):
         """Returns coffeetypes dictionary."""
         return self.coffeetypes
 
-    def getIngredients(self):
+    def get_ingredients(self):
         """Returns ingredients dictionary."""
         return self.ingredients
 
-    def getCurrentCash(self):
+    def get_current_cash(self):
         """Returns cash (£) held by the shop at any given time."""
         return self.current_cash
 
-    def getChosenBaristas(self):
+    def get_chosen_baristas(self):
         """Returns baristas dictionary."""
         return self.chosen_baristas
 
-    def getAllSpecialityStaffName(self):
+    def get_all_speciality_staff_name(self):
         """Returns a list of all baristas names who have a coffee making speciality."""
         return self.all_speciality_staff_name
 
-    def getAllNormalStaffName(self):
+    def get_all_normal_staff_name(self):
         """Returns a list of all baristas names who do not have a coffee making speciality."""
         return self.all_normal_staff_name
 
-    def setMonth(self, month:int):
+    def set_month(self, month:int):
         """Sets the simulation month number."""
         self.simulation_month = month
 
-    def printHeader(self):
+    def print_header(self):
         """Prints out the header at the beginning of each month."""
         print("==========================================================================")
         print(f"=========================== SIMULATING MONTH {self.simulation_month} ===========================")
         print("==========================================================================")
 
     # PROGRAM EXTENSION
-    def maximiseIncome(self):
+    def maximise_income(self):
         """Uses bubble sort to sort coffeetypes dictionary based on largest price per unit time of barista
         so that coffee demand is attended accordingly to maximize income."""
         list_of_coffeetypes = list(self.coffeetypes.values())
@@ -103,8 +103,8 @@ class CoffeeShop:
         for i in range(n):
             swapped = False
             for j in range(0, n-i-1):
-                j_0 = list_of_coffeetypes[j].getSellPrice()/list_of_coffeetypes[j].getPrepTime()
-                j_1 = list_of_coffeetypes[j+1].getSellPrice()/list_of_coffeetypes[j+1].getPrepTime()
+                j_0 = list_of_coffeetypes[j].get_sell_price()/list_of_coffeetypes[j].get_prep_time()
+                j_1 = list_of_coffeetypes[j+1].get_sell_price()/list_of_coffeetypes[j+1].get_prep_time()
                 if j_0 < j_1:
                     list_of_coffeetypes[j], list_of_coffeetypes[j+1] = list_of_coffeetypes[j+1], list_of_coffeetypes[j]
                     swapped = True
@@ -113,11 +113,11 @@ class CoffeeShop:
         sorted_coffeetype_dict = {}
         # creates a new dictionary with sorted values/objects
         for coffee in list_of_coffeetypes:
-            sorted_coffeetype_dict.update({coffee.getName():coffee})
+            sorted_coffeetype_dict.update({coffee.get_name():coffee})
         # reassigns the old the dictionary with the new one
         self.coffeetypes = sorted_coffeetype_dict
 
-    def addBarista(self):
+    def add_barista(self):
         "Adds barista to the chosen_baristas dictionary."
         name_exists = True # boolean used to check if the name is unique or not
         # if barista already exists then user is prompted to enter a new name
@@ -132,12 +132,12 @@ class CoffeeShop:
                     print("Barista name already exists, please enter a unique name!")
                 else:
                     barista = Barista()
-                    barista.setName(name)
+                    barista.set_name(name)
                     self.chosen_baristas.update({name:barista})
                     name_exists = False
                     return name, barista
 
-    def removeBarista(self):
+    def remove_barista(self):
         "Removes barista from the chosen_baristas dictionary and all_speciality_staff_name list."
         name_exists = False
         # prompts user to name the barista to remove and checks if that exits
@@ -148,21 +148,21 @@ class CoffeeShop:
                     # if barista has any speciality
                     if name in self.all_speciality_staff_name:
                         # removes name from the respective coffeetype object
-                        type_coffee = self.chosen_baristas[name].getSpeciality()
-                        self.coffeetypes[type_coffee].removeSpecialityStaff(name)
+                        type_coffee = self.chosen_baristas[name].get_speciality()
+                        self.coffeetypes[type_coffee].remove_speciality_staff(name)
                         # removes name from speciality staff name list
                         self.all_speciality_staff_name.remove(name)
                     else:
                         # removes name from the normal staff name list
                         self.all_normal_staff_name.remove(name)
-                    print(f"Removed {name}, hourly rate = £{self.chosen_baristas[name].getRatePerHour():.2f} in month {self.simulation_month}")
+                    print(f"Removed {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_month}")
                     del self.chosen_baristas[name]
                     name_exists = True
                 else:
                     print("Please enter a valid barista name. Here are the current baristas: ")
                     print(*(list(self.chosen_baristas.keys())), sep = ", ")
 
-    def selectSpeciality(self, name, barista):
+    def select_speciality(self, name, barista):
         """
         Prompts user to enter barista's coffee making speciality (if any) from a list of
         coffees served at the shop.
@@ -197,21 +197,21 @@ class CoffeeShop:
             if speciality_exists.lower()=="y" or speciality_exists.lower()=="yes":
                 speciality = input("Please enter the type of coffee: ").strip().title()
                 if speciality in list(self.coffeetypes.keys()):
-                    barista.setSpeciality(speciality) # assigns to speciality within barista object
+                    barista.set_speciality(speciality) # assigns to speciality within barista object
                     # assigns barista name within coffee type
-                    self.coffeetypes[speciality].setSpecialityStaff(barista.getName())
+                    self.coffeetypes[speciality].set_speciality_staff(barista.get_name())
                     # assigns barista name to the list of speciality staff only
-                    self.all_speciality_staff_name.append(barista.getName())
+                    self.all_speciality_staff_name.append(barista.get_name())
                     speciality_valid_response = True
                 else:
                     print("Please enter a valid type of coffee! (Note: response is case sensitve)")
             else:
                 # assignes barista name to the list of normal staff
-                self.all_normal_staff_name.append(barista.getName())
+                self.all_normal_staff_name.append(barista.get_name())
                 speciality_valid_response = True
-        print(f"Added {name}, hourly rate = £{self.chosen_baristas[name].getRatePerHour():.2f} in month {self.simulation_month}")
+        print(f"Added {name}, hourly rate = £{self.chosen_baristas[name].get_rate_per_hour():.2f} in month {self.simulation_month}")
 
-    def assignDemand(self, rem, coffeetype, demand:int, barista_list:list, speciality:bool):
+    def assign_demand(self, rem, coffeetype, demand:int, barista_list:list, speciality:bool):
         """
         Calculates the updated quantity used by the ingredient based on serving the demand.
 
@@ -240,29 +240,29 @@ class CoffeeShop:
             denom = Fraction(60)
 
         for name in barista_list:
-            if self.chosen_baristas[name].getHrsWorked()!=80:
-                avl = Fraction(80) - Fraction(self.chosen_baristas[name].getHrsWorked())
+            if self.chosen_baristas[name].get_hrs_worked()!=80:
+                avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
                 # if available (avl) hrs for each barista is greater than hrs demand for serving
                 # type of coffee then all the hrs are assigned to one barista, else the remainder 
                 # (rem) number of hrs is assigned to the next barista in line
                 if rem >0:
                     if rem > avl:
                         rem = rem - avl
-                        self.chosen_baristas[name].increaseHrsWorked(avl)
+                        self.chosen_baristas[name].increase_hrs_worked(avl)
                     else:
-                        self.chosen_baristas[name].increaseHrsWorked(rem)
+                        self.chosen_baristas[name].increase_hrs_worked(rem)
                         rem = 0
                         break
-                elif avl >= ((Fraction(demand)*Fraction(coffeetype.getPrepTime()))/denom):
-                    hrs = (Fraction(demand)*Fraction(coffeetype.getPrepTime()))/denom
-                    self.chosen_baristas[name].increaseHrsWorked(hrs)
+                elif avl >= ((Fraction(demand)*Fraction(coffeetype.get_prep_time()))/denom):
+                    hrs = (Fraction(demand)*Fraction(coffeetype.get_prep_time()))/denom
+                    self.chosen_baristas[name].increase_hrs_worked(hrs)
                     break
                 else:
-                    rem = ((Fraction(demand)*Fraction(coffeetype.getPrepTime()))/denom) - avl
-                    self.chosen_baristas[name].increaseHrsWorked(avl)
+                    rem = ((Fraction(demand)*Fraction(coffeetype.get_prep_time()))/denom) - avl
+                    self.chosen_baristas[name].increase_hrs_worked(avl)
         return rem
 
-    def assignLeftoverDemand(self, rem, barista_list:list):
+    def assign_leftover_demand(self, rem, barista_list:list):
         """
         Calculates the updated quantity used by the ingredient based on serving the demand.
 
@@ -279,42 +279,42 @@ class CoffeeShop:
         """
         if rem > 0:
             for name in barista_list:
-                if self.chosen_baristas[name].getHrsWorked()!=80:
-                    avl = Fraction(80) - Fraction(self.chosen_baristas[name].getHrsWorked())
+                if self.chosen_baristas[name].get_hrs_worked()!=80:
+                    avl = Fraction(80) - Fraction(self.chosen_baristas[name].get_hrs_worked())
                     if rem > 0:
                         if rem > avl:
                             rem = rem - avl
-                            self.chosen_baristas[name].increaseHrsWorked(avl)
+                            self.chosen_baristas[name].increase_hrs_worked(avl)
                         else:
-                            self.chosen_baristas[name].increaseHrsWorked(rem)
+                            self.chosen_baristas[name].increase_hrs_worked(rem)
                             rem = 0
                             break
 
-    def printStatus(self):
+    def print_status(self):
         """Prints out the shop name, cash status, quantity of each ingredient available and
         hired baristas."""
         print(f"Shop Name: {self.name}, Cash: £{self.current_cash:.2f}")
         print("\t Pantry")
         # prints out remaining quantity of each ingredient
         for ingredient in list(self.ingredients.values()):
-            if ingredient.getName()=="Milk":
+            if ingredient.get_name()=="Milk":
                 units = "L"
             else:
                 units = "g"
-            print(f"\t\t {ingredient.getName()}, remaining {ingredient.getLeftoverQuantity():.2f}{units} (capacity = {ingredient.getCapacity()}{units})")
+            print(f"\t\t {ingredient.get_name()}, remaining {ingredient.get_leftover_quantity():.2f}{units} (capacity = {ingredient.get_capacity()}{units})")
         print("\t Barista")
         # prints out baristas and their rates
         for barista in list(self.chosen_baristas.values()):
-            print(f"\t\tBarista {barista.getName()}, hourly rate = £{barista.getRatePerHour():.2f}")
+            print(f"\t\tBarista {barista.get_name()}, hourly rate = £{barista.get_rate_per_hour():.2f}")
 
-    def collectCoffeeIncome(self):
+    def collect_coffee_income(self):
         """Calculates the amount earned from quantities sold for each type of coffee."""
         for coffee in list(self.coffeetypes.values()):
-            coffee_income = coffee.getQuantitySold()*coffee.getSellPrice()
+            coffee_income = coffee.get_quantity_sold()*coffee.get_sell_price()
             self.current_cash += coffee_income
-            coffee.resetSoldQuantity()
+            coffee.reset_sold_quantity()
 
-    def payMonthlyRent(self):
+    def pay_monthly_rent(self):
         """Returns a boolean to indicate if there sufficient cash to pay the monthly rent and if
         there is then rent is deducted from the cash held by the shop."""
         if (self.current_cash - self.fixed_monthly_rent) < 0:
@@ -329,42 +329,42 @@ class CoffeeShop:
             bankrupt = False
             return bankrupt
 
-    def payBaristas(self):
+    def pay_baristas(self):
         """Returns a boolean to indicate if there sufficient cash to pay all the baristas and if
         there is then salaries are deducted from the cash held by the shop."""
         bankrupt = False
         for barista in list(self.chosen_baristas.values()):
-            barista_salary = barista.getRatePerHour()*barista.getHrsPaid()
+            barista_salary = barista.get_rate_per_hour()*barista.get_hrs_paid()
             if (self.current_cash - barista_salary)<0:
-                print(f"BANKRUPT: Insufficient cash to pay {barista.getName()}!")
+                print(f"BANKRUPT: Insufficient cash to pay {barista.get_name()}!")
                 # informs user how much is required vs current cash that shop has
                 print(f"Require £{(barista_salary):.2f}, but only have £{self.current_cash:.2f}!")
                 bankrupt = True
                 break
             else:
                 self.current_cash -= barista_salary
-                barista.resetHrsWorked()
-                print(f"\tPaid {barista.getName()}, hourly rate = £{barista.getRatePerHour():.2f}, amount £{(barista_salary):.2f}")
+                barista.reset_hrs_worked()
+                print(f"\tPaid {barista.get_name()}, hourly rate = £{barista.get_rate_per_hour():.2f}, amount £{(barista_salary):.2f}")
         return bankrupt
 
-    def payPantryCosts(self):
+    def pay_pantry_costs(self):
         """Returns a boolean to indicate if there sufficient cash to pay all the pantry costs and if
         there is then costs are deducted from the cash held by the shop."""
         bankrupt = False
         for ingredient in list(self.ingredients.values()):
-            pantry_cost = ingredient.getPantryCostRate()*ingredient.getLeftoverQuantity()
+            pantry_cost = ingredient.get_pantry_cost_rate()*ingredient.get_leftover_quantity()
             if (self.current_cash - pantry_cost) <0:
-                print(f"BANKRUPT: Insufficient cash to pay pantry costs for {ingredient.getName()}!")
+                print(f"BANKRUPT: Insufficient cash to pay pantry costs for {ingredient.get_name()}!")
                 # informs user how much is required vs current cash that shop has
                 print(f"Require £{(pantry_cost):.2f}, but only have £{self.current_cash:.2f}!")
                 bankrupt = True
                 break
             else:
                 self.current_cash -= pantry_cost
-                print(f"\tPantry {ingredient.getName()} cost £{pantry_cost:.2f}")
+                print(f"\tPantry {ingredient.get_name()} cost £{pantry_cost:.2f}")
         return bankrupt
 
-    def restockIngredients(self):
+    def restock_ingredients(self):
         """Returns a boolean to indicate if there sufficient cash to restock all the ingredients and if
         there is then costs are deducted from the cash held by the shop."""
         valid_response = False # boolean used to acquire valid response
@@ -380,14 +380,14 @@ class CoffeeShop:
                 print("Supplier does not exist! (Note: response is case sensitve)")
         # looping through each ingredient to get the updated value of cash and reset its quantity
         for ingredient in list(self.ingredients.values()):
-            if (self.current_cash - ingredient.getRestockCost(self.suppliers[supplier_choose])) < 0:
-                print (f"BANKRUPT: Insufficient cash to restock {ingredient.getName()}!")
+            if (self.current_cash - ingredient.get_restock_cost(self.suppliers[supplier_choose])) < 0:
+                print (f"BANKRUPT: Insufficient cash to restock {ingredient.get_name()}!")
                 # informs user how much is required vs current cash that shop has
-                print (f"Require £{(ingredient.getRestockCost(self.suppliers[supplier_choose])):.2f}, but only have £{self.current_cash:.2f}!")
+                print (f"Require £{(ingredient.get_restock_cost(self.suppliers[supplier_choose])):.2f}, but only have £{self.current_cash:.2f}!")
                 bankrupt = True
                 break
             else:
-                self.current_cash -= ingredient.getRestockCost(self.suppliers[supplier_choose])
-                ingredient.resetQuantityUsed()
+                self.current_cash -= ingredient.get_restock_cost(self.suppliers[supplier_choose])
+                ingredient.reset_quantity_used()
         return bankrupt
                     

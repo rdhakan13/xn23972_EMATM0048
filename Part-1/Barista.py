@@ -26,38 +26,38 @@ class Barista:
         self.rate_per_hour = 15
         self.hrs_worked = 0
 
-    def setName(self, name:str):
+    def set_name(self, name:str):
         """Takes name as input and assigns it to the name attribute."""
         self.name = name
 
-    def getName(self):
+    def get_name(self):
         """Returns barista's name."""
         return self.name
 
-    def setSpeciality(self, speciality:str):
+    def set_speciality(self, speciality:str):
         """Takes speciality as input and assigns it to the speciality attribute."""
         self.speciality = speciality
 
-    def getSpeciality(self):
+    def get_speciality(self):
         """Returns the speciality coffee."""
         return self.speciality
 
-    def getHrsPaid(self):
+    def get_hrs_paid(self):
         """Returns the number of hours a barista gets paid for."""
         return self.hrs_paid
 
-    def getRatePerHour(self):
+    def get_rate_per_hour(self):
         """Returns £ per hour charge of a barista."""
         return self.rate_per_hour
 
-    def getHrsWorked(self):
+    def get_hrs_worked(self):
         """Returns the number of hours a barista has worked for."""
         return self.hrs_worked
 
-    def increaseHrsWorked(self, hrs):
+    def increase_hrs_worked(self, hrs):
         """Increases number of hours a barista has worked for."""
         self.hrs_worked += hrs
 
-    def resetHrsWorked(self):
+    def reset_hrs_worked(self):
         """Resets the number of hours a barista has worked for to 0."""
         self.hrs_worked = 0

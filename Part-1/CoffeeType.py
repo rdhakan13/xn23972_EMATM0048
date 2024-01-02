@@ -42,59 +42,59 @@ class CoffeeType:
         self.sold = 0
         self.speciality_staff = []
 
-    def getName(self):
+    def get_name(self):
         """Returns the name of coffee type."""
         return self.name
 
-    def getMilkReqd(self):
+    def get_milk_reqd(self):
         """Returns the quantity of milk required (in litres)."""
         return self.milk_reqd
 
-    def getBeansReqd(self):
+    def get_beans_reqd(self):
         """Returns the quantity of beans required (in grams)."""
         return self.beans_reqd
 
-    def getSpicesReqd(self):
+    def get_spices_reqd(self):
         """Returns the quantity of spices required (in grams)."""
         return self.spices_reqd
 
-    def getPrepTime(self):
+    def get_prep_time(self):
         """Returns the time taken to prepare 1 coffee (in minutes)."""
         return self.prep_time
 
-    def getMonDem(self):
+    def get_mon_dem(self):
         """Returns the quantity of coffee demanded in a month."""
         return self.mon_dem
 
-    def getSellPrice(self):
+    def get_sell_price(self):
         """Returns the unit price of a coffee."""
         return self.sell_price
 
-    def getQuantitySold(self):
+    def get_quantity_sold(self):
         """Returns the quantity of coffee sold in a month."""
         return self.sold
 
-    def increaseSoldQuantity(self, demand:int):
+    def increase_sold_quantity(self, demand:int):
         """Increases the quantity of coffee sold in a month."""
         self.sold = demand
 
-    def resetSoldQuantity(self):
+    def reset_sold_quantity(self):
         """Resets the quantity of coffee sold to 0."""
         self.sold = 0
 
-    def setSpecialityStaff(self, name:str):
+    def set_speciality_staff(self, name:str):
         """Assigns name to speciality staff list."""
         self.speciality_staff.append(name)
 
-    def getSpecialityStaffList(self):
+    def get_speciality_staff_list(self):
         """Returns speciality staff list."""
         return self.speciality_staff
 
-    def removeSpecialityStaff(self, name:str):
+    def remove_speciality_staff(self, name:str):
         """Removes the given name of staff from speciality staff list."""
         self.speciality_staff.remove(name)
 
-    def checkSupply(self, demand:int, baristas_dict:dict, ingredients:dict):
+    def check_supply(self, demand:int, baristas_dict:dict, ingredients:dict):
         """
         Checks if there is enough barista hours and quantity of ingredients available to
         meet the requested demand.
@@ -122,9 +122,9 @@ class CoffeeType:
         # iterating through list of baristas to cumulate total time available (in hrs) and also
         # separately cumulate time available from specialist barista for the given coffee type
         for barista in list(baristas_dict.values()):
-            total_time_available += Fraction(80) - Fraction(barista.getHrsWorked())
-            if barista.getSpeciality()==self.name:
-                time_from_specialist += Fraction(80) - Fraction(barista.getHrsWorked())
+            total_time_available += Fraction(80) - Fraction(barista.get_hrs_worked())
+            if barista.get_speciality()==self.name:
+                time_from_specialist += Fraction(80) - Fraction(barista.get_hrs_worked())
 
         # given the time available, for both specialist and non specialist baristas, the below
         # calculates the total capacity of barista given if ingredients were not the limiting factor
@@ -138,7 +138,7 @@ class CoffeeType:
             if ingredient.getName() == "Milk":
                 req = demand*self.milk_reqd
                 if req!=0:
-                    avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
+                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
                     ingredient_capacity.append(math.floor(avl/self.milk_reqd))
                     # if the available (avl) quantity is less than the requested (req) then an 
                     # warning message is logged
@@ -149,7 +149,7 @@ class CoffeeType:
             elif ingredient.getName() == "Beans":
                 req = demand*self.beans_reqd
                 if req!=0:
-                    avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
+                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
                     ingredient_capacity.append(math.floor(avl/self.beans_reqd))
                     if avl < req:
                         messages.append(f"\tBeans need {req:.1f}g, pantry contains only {avl:.1f}g")
@@ -158,7 +158,7 @@ class CoffeeType:
             else:
                 req = demand*self.spices_reqd
                 if req!=0:
-                    avl = ingredient.getCapacity() - ingredient.getQuantityUsed()
+                    avl = ingredient.get_capacity() - ingredient.get_quantity_used()
                     ingredient_capacity.append(math.floor(avl/self.spices_reqd))
                     if avl < req:
                         messages.append(f"\tSpices need {req:.1f}g, pantry contains only {avl:.1f}g")
