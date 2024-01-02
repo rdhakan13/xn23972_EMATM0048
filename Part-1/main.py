@@ -44,6 +44,7 @@ while RUN_SIMULATION is True:
     Coffeeshop = CoffeeShop(shop_name)
 
     # option to maximise income, ask users to enter coffee demand in order of most income generating
+    # comment out the below code to stop using this feature
     Coffeeshop.maximise_income()
 
     # simulating months with CoffeeShop methods
