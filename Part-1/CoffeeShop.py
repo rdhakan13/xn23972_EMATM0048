@@ -371,7 +371,7 @@ class CoffeeShop:
         bankrupt = False
         # prompting user to select the supplier from the list
         print("Supplier list: ")
-        print(*(list(self.suppliers.keys())), sep = ", ") 
+        print(*(list(self.suppliers.keys())), sep = ", ")
         while valid_response is False:
             supplier_choose = input("Please select a supplier from the above list to restock ingredients: ").strip().title()
             if supplier_choose in self.suppliers:
