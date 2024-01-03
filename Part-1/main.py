@@ -218,7 +218,7 @@ while RUN_SIMULATION is True:
                         print("All expenses have been paid!")
                         print("All ingredients have been fully restocked.")
                         print('--------------------------------------------------------------------------')
-                        print(f"MONTH {month} FINAL BALANCE: {Coffeeshop.get_current_cash():.2f}")
+                        print(f"MONTH {month} FINAL BALANCE: £{Coffeeshop.get_current_cash():.2f}")
                         print('--------------------------------------------------------------------------')
                         print("")
 
