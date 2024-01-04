@@ -4,7 +4,7 @@ The work in the following repository is for the SDPA Summative Assessment.
 
 
 ## Part 1 - Coffee Shop Simulation
-The purpose of this code is to simulate the operations of a coffee shop for a select number of months as inputted by the user. The coffee shop has fixed demand for each of the coffee type it sells, which require ingredients and labour hours from set number of baristas. The goal for the coffee shop is to make profit and avoid going bankrupt.
+The purpose of this code is to simulate the operations of a coffee shop for a select number of months as inputted by the user. The coffee shop has fixed demand for each of the coffee type it sells, which require set ingredients and labour hours from set number of baristas. The goal for the coffee shop is to make profit and avoid going bankrupt.
 
 ### Code Design
 The code contains 5 classes and 1 main file through which the code will run. The 5 classes are as such:
@@ -46,3 +46,4 @@ To install `yfinance`, ensure you have minimum Python 3.4. Install `yfinance` us
 ```
 pip install yfinance
 ```
+To terminate or stop the program in the middle of simulation: `ctrl+C`
