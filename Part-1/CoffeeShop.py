@@ -90,9 +90,9 @@ class CoffeeShop:
 
     def print_header(self):
         """Prints out the header at the beginning of each month."""
-        print("==========================================================================")
-        print(f"=========================== SIMULATING MONTH {self.simulation_month} ===========================")
-        print("==========================================================================")
+        print("================================================================================")
+        print(f"============================== SIMULATING MONTH {self.simulation_month} ==============================")
+        print("================================================================================")
 
     # PROGRAM EXTENSION
     def maximise_income(self):

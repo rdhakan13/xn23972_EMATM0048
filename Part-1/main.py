@@ -118,7 +118,7 @@ while RUN_SIMULATION is True:
                         print("")
                         RESPONSE = True
                 except ValueError:
-                    print("Please enter an integer")
+                    print("Please enter an integer!")
 
         # loops through each coffee to set demand
         for coffee in list(Coffeeshop.get_coffee_types().values()):
@@ -210,16 +210,16 @@ while RUN_SIMULATION is True:
                     if BANKRUPT is True:
                         print("")
                         print(f"Went BANKRUPT in month {month}")
-                        print('--------------------------------------------------------------------------')
+                        print('--------------------------------------------------------------------------------')
                         print("")
                         break
                     else:
                         print("")
                         print("All expenses have been paid!")
                         print("All ingredients have been fully restocked.")
-                        print('--------------------------------------------------------------------------')
+                        print('--------------------------------------------------------------------------------')
                         print(f"MONTH {month} FINAL BALANCE: £{Coffeeshop.get_current_cash():.2f}")
-                        print('--------------------------------------------------------------------------')
+                        print('--------------------------------------------------------------------------------')
                         print("")
 
     # boolean value to check if valid RESPONSE is given to continue with another simulation
