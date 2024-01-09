@@ -14,13 +14,15 @@ class Ingredient:
     capacity : int
         maximum quantity of the ingredient that the shop can hold
     deprec : float
-        quantity per month that the ingredient depreciates (i.e. goes bad) at the end of each month
+        quantity per month that the ingredient depreciates (i.e. goes bad) at
+        the end of each month
     pantry_cost_rate : float
         cost incurred by the leftover quantity of ingredient per month
     leftover : float
         unused quantity of the ingredient
     pantry_cost : float
-        total cost incurred by the leftover quantity of ingredient (i.e leftover x pantry_cost_rate)
+        total cost incurred by the leftover quantity of ingredient (i.e
+        leftover x pantry_cost_rate)
     quantity_used : float
         quantity of the ingredient used up
     """
@@ -51,7 +53,8 @@ class Ingredient:
 
     def increase_quantity_used(self, demand:int, coffeetype):
         """
-        Calculates the updated quantity used by the ingredient based on serving the demand.
+        Calculates the updated quantity used by the ingredient based on serving
+        the demand.
 
         Parameters
         ----------
@@ -65,10 +68,15 @@ class Ingredient:
         None
         """
         if self.name == "Milk":
+
             self.quantity_used += (demand*coffeetype.get_milk_reqd())
+
         elif self.name == "Beans":
+
             self.quantity_used += (demand*coffeetype.get_beans_reqd())
+
         else:
+
             self.quantity_used += (demand*coffeetype.get_spices_reqd())
 
     def reset_quantity_used(self):
@@ -77,13 +85,16 @@ class Ingredient:
 
     def get_leftover_quantity(self):
         """Calculates and returns the unused quantity of the ingredient."""
+
         self.leftover = self.capacity - self.quantity_used
+
         return self.leftover
 
     def get_restock_cost(self, supplier):
         """
-        For restocking the ingredient to its maximum capacity, get_restock_cost calculates
-        the total quantity to be ordered from the supplier and the respective cost.
+        For restocking the ingredient to its maximum capacity, get_restock_cost
+        calculates the total quantity to be ordered from the supplier and the
+        respective cost.
 
         Parameters
         ----------
@@ -95,14 +106,25 @@ class Ingredient:
         Cost of restocking a ingredient from supplier
         """
         quantity_used = self.quantity_used + math.ceil(self.leftover*self.deprec)
+
         if quantity_used > self.capacity:
+
             quantity_used = self.capacity
+
         if self.name == "Milk":
+
             restock_cost = supplier.get_milk_rate()*quantity_used
+
             return restock_cost
+
         elif self.name == "Beans":
+
             restock_cost = supplier.get_beans_rate()*quantity_used
+
             return restock_cost
+
         else:
+
             restock_cost = supplier.get_spices_rate()*quantity_used
+
             return restock_cost
