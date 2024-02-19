@@ -36,7 +36,7 @@ To run the simulation, first open the terminal and navigate to the directory of 
 ```
 python main.py
 ```
-
+To terminate or stop the program in the middle of the simulation: `ctrl+C`
 
 ## Part 2 - Exploratory Data Analysis
 
@@ -46,4 +46,3 @@ To install `yfinance`, ensure you have a minimum of Python 3.4. Install `yfinanc
 ```
 pip install yfinance
 ```
-To terminate or stop the program in the middle of the simulation: `ctrl+C`
